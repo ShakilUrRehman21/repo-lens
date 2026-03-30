@@ -1,10 +1,9 @@
-# GithubScanner – AI-Powered Code Intelligence Platform
+# RepoLens – AI-Powered Code Intelligence Platform
 
-![GithubScanner Banner](./public/banner.png)
 
 ## 🧠 Overview
 
-GithubScanner is a production-grade SaaS tool that analyzes GitHub repositories using Google Gemini AI and delivers structured engineering insights: architecture scores, security audits, technical debt indexes, scalability evaluations, and automated PR reviews.
+RepoLens is a production-grade SaaS tool that analyzes GitHub repositories using Google Gemini AI and delivers structured engineering insights: architecture scores, security audits, technical debt indexes, scalability evaluations, and automated PR reviews.
 
 ---
 
