@@ -10,7 +10,6 @@ import {
     GitPullRequest,
     Download,
     ShieldCheck,
-    ChevronRight,
     Home
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -37,8 +36,8 @@ function SidebarHeader() {
 }
 
 export function Sidebar() {
-    const pathname = usePathname()
 
+    const pathname = usePathname();
     return (
         <aside className="flex flex-col w-64 min-h-screen bg-[#FFFFFF] border-r border-black/[0.06] select-none">
             {/* Logo */}

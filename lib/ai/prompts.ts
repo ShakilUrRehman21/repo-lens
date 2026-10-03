@@ -165,6 +165,7 @@ Return this exact JSON structure:
 export const PR_REVIEW_PROMPT = (diff: string, title?: string, desc?: string) => `
 You are a senior code reviewer reviewing a pull request diff.
 PR Title: ${title || 'PR Review'}
+${desc ? `PR Description: ${desc}\n` : ''}
 
 Diff:
 \`\`\`diff

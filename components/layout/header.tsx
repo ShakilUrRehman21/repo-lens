@@ -1,12 +1,10 @@
 'use client'
 
 import { Bell } from 'lucide-react'
-import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { UserButton } from '@clerk/nextjs'
 
 export function Header() {
-    const pathname = usePathname()
 
     return (
         <header className="flex items-center justify-between px-6 sm:px-8 py-4 border-b border-black/[0.06] bg-[#FFFFFF] sticky top-0 z-20">
