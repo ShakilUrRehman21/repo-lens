@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Shield, Users, BarChart3, Activity, Ban, RefreshCw } from 'lucide-react'
+import { Shield, Users, BarChart3, Activity, Ban, RefreshCw, Loader2 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -50,91 +50,100 @@ export default function AdminPage() {
 
     if (loading) {
         return (
-            <div className="space-y-6">
+            <div className="space-y-6 max-w-6xl">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-28 rounded-xl bg-white/5" />)}
+                    {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-28 rounded-2xl bg-black/5" />)}
                 </div>
-                <Skeleton className="h-64 rounded-xl bg-white/5" />
+                <Skeleton className="h-64 rounded-2xl bg-black/5" />
             </div>
         )
     }
 
+    const statCards = [
+        { label: 'Total Users', value: stats?.totalUsers ?? 0, icon: Users, iconBg: 'bg-[#0D0E12]', iconColor: 'text-[#D4F63C]' },
+        { label: 'Total Scans', value: stats?.totalScans ?? 0, icon: BarChart3, iconBg: 'bg-emerald-100', iconColor: 'text-emerald-700' },
+        { label: 'Completed', value: stats?.completedScans ?? 0, icon: Activity, iconBg: 'bg-blue-100', iconColor: 'text-blue-700' },
+        { label: 'Tokens Used', value: `${((stats?.totalTokensUsed ?? 0) / 1000).toFixed(1)}K`, icon: RefreshCw, iconBg: 'bg-amber-100', iconColor: 'text-amber-700' },
+    ]
+
     return (
-        <div className="space-y-6">
-            <div className="flex items-center gap-2">
-                <Shield className="w-5 h-5 text-red-400" />
+        <div className="space-y-8 max-w-6xl">
+            <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-red-100 flex items-center justify-center">
+                    <Shield className="w-5 h-5 text-red-600" />
+                </div>
                 <div>
-                    <h2 className="text-xl font-bold text-slate-100">Admin Dashboard</h2>
-                    <p className="text-slate-500 text-sm">Platform-wide statistics and user management</p>
+                    <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0D0E12]">Admin Dashboard</h2>
+                    <p className="text-[#555962] text-xs sm:text-sm">Platform-wide statistics and user management</p>
                 </div>
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {[
-                    { label: 'Total Users', value: stats?.totalUsers ?? 0, icon: Users, color: 'text-indigo-400', bg: 'bg-indigo-500/10' },
-                    { label: 'Total Scans', value: stats?.totalScans ?? 0, icon: BarChart3, color: 'text-green-400', bg: 'bg-green-500/10' },
-                    { label: 'Completed', value: stats?.completedScans ?? 0, icon: Activity, color: 'text-blue-400', bg: 'bg-blue-500/10' },
-                    { label: 'Tokens Used', value: `${((stats?.totalTokensUsed ?? 0) / 1000).toFixed(1)}K`, icon: RefreshCw, color: 'text-amber-400', bg: 'bg-amber-500/10' },
-                ].map(s => {
+                {statCards.map(s => {
                     const Icon = s.icon
                     return (
-                        <Card key={s.label} className="glass border-white/5">
-                            <CardContent className="p-5">
-                                <div className={`w-8 h-8 rounded-lg ${s.bg} flex items-center justify-center mb-3`}>
-                                    <Icon className={`w-4 h-4 ${s.color}`} />
-                                </div>
-                                <p className={`text-3xl font-bold ${s.color}`}>{s.value}</p>
-                                <p className="text-xs text-slate-500 mt-1">{s.label}</p>
-                            </CardContent>
-                        </Card>
+                        <div key={s.label} className="bg-white rounded-2xl p-5 border border-black/[0.06] shadow-xs space-y-3">
+                            <div className={`w-9 h-9 rounded-xl ${s.iconBg} flex items-center justify-center`}>
+                                <Icon className={`w-4.5 h-4.5 ${s.iconColor}`} />
+                            </div>
+                            <div>
+                                <p className="text-3xl font-extrabold text-[#0D0E12]">{s.value}</p>
+                                <p className="text-xs text-[#555962] mt-0.5">{s.label}</p>
+                            </div>
+                        </div>
                     )
                 })}
             </div>
 
             {/* Users table */}
-            <Card className="glass border-white/5">
-                <CardHeader>
-                    <CardTitle className="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                        <Users className="w-4 h-4 text-slate-400" />
+            <Card className="bg-white border-black/[0.06] shadow-xs rounded-[28px]">
+                <CardHeader className="pb-0">
+                    <CardTitle className="text-sm font-bold text-[#0D0E12] flex items-center gap-2">
+                        <Users className="w-4 h-4 text-[#555962]" />
                         All Users
                     </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pt-4">
                     {users.length === 0 ? (
-                        <p className="text-slate-600 text-sm text-center py-6">No users found.</p>
+                        <p className="text-[#555962] text-sm text-center py-6">No users found.</p>
                     ) : (
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
                                 <thead>
-                                    <tr className="border-b border-white/5">
-                                        <th className="text-left py-2 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Email</th>
-                                        <th className="text-left py-2 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Plan</th>
-                                        <th className="text-left py-2 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Joined</th>
-                                        <th className="text-right py-2 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
+                                    <tr className="border-b border-black/[0.06]">
+                                        <th className="text-left py-2.5 px-3 text-xs font-bold text-[#555962] uppercase tracking-wider">Email</th>
+                                        <th className="text-left py-2.5 px-3 text-xs font-bold text-[#555962] uppercase tracking-wider">Plan</th>
+                                        <th className="text-left py-2.5 px-3 text-xs font-bold text-[#555962] uppercase tracking-wider">Joined</th>
+                                        <th className="text-right py-2.5 px-3 text-xs font-bold text-[#555962] uppercase tracking-wider">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {users.map(user => (
-                                        <tr key={user.id} className="border-b border-white/5 last:border-0 hover:bg-white/2">
-                                            <td className="py-3 px-3 text-slate-300">{user.email}</td>
+                                        <tr key={user.id} className="border-b border-black/[0.04] last:border-0 hover:bg-[#FAFAF8] transition-colors">
+                                            <td className="py-3 px-3 text-[#0D0E12] font-medium text-sm">{user.email}</td>
                                             <td className="py-3 px-3">
-                                                <Badge className={user.plan === 'pro' ? 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30' : 'bg-slate-700/50 text-slate-400 border-slate-600/30'}>
+                                                <Badge className={user.plan === 'pro'
+                                                    ? 'bg-[#D4F63C]/20 text-[#0D0E12] border-[#D4F63C]/40 font-bold'
+                                                    : 'bg-[#F6F7F3] text-[#555962] border-black/10 font-medium'
+                                                }>
                                                     {user.plan}
                                                 </Badge>
                                             </td>
-                                            <td className="py-3 px-3 text-slate-500 text-xs">
+                                            <td className="py-3 px-3 text-[#555962] text-xs font-mono">
                                                 {format(new Date(user.createdAt), 'MMM d, yyyy')}
                                             </td>
                                             <td className="py-3 px-3 text-right">
                                                 <Button
                                                     size="sm"
                                                     variant="ghost"
-                                                    className="text-red-400 hover:text-red-300 hover:bg-red-500/10 h-7 gap-1"
+                                                    className="text-red-600 hover:text-red-700 hover:bg-red-50 h-7 gap-1 rounded-lg text-xs font-semibold"
                                                     disabled={banning === user.id}
                                                     onClick={() => banUser(user.id)}
                                                 >
-                                                    <Ban className="w-3 h-3" />
+                                                    {banning === user.id
+                                                        ? <Loader2 className="w-3 h-3 animate-spin" />
+                                                        : <Ban className="w-3 h-3" />}
                                                     {banning === user.id ? 'Banning...' : 'Ban'}
                                                 </Button>
                                             </td>

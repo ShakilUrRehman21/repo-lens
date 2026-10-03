@@ -83,7 +83,7 @@ const TYPE_ICON: Record<string, React.ReactNode> = {
     bad_practice: <TrendingDown className="w-3.5 h-3.5" />,
 }
 
-// ─── Code Viewer ──────────────────────────────────────────────────────────────
+// ─── Code Viewer (intentionally dark — like a code editor) ────────────────────
 
 function CodeViewer({
     analysis,
@@ -101,14 +101,14 @@ function CodeViewer({
     const isApproved = analysis.status === 'approved' || analysis.annotations.length === 0
 
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full bg-[#0D0E12] rounded-[20px] overflow-hidden">
             {/* File header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-[#0d0e14]">
                 <div className="flex items-center gap-2">
-                    <Code2 className="w-3.5 h-3.5 text-indigo-400" />
+                    <Code2 className="w-3.5 h-3.5 text-[#D4F63C]" />
                     <span className="text-xs font-mono text-slate-300">{analysis.filePath}</span>
                     <Badge className={`text-[10px] ml-1 ${isApproved ? 'bg-green-500/20 text-green-400 border-green-500/30' : 'bg-orange-500/20 text-orange-400 border-orange-500/30'}`}>
-                        {isApproved ? '✓ Approved' : `${analysis.annotations.length} issue${analysis.annotations.length !== 1 ? 's' : ''}`}
+                        {isApproved ? 'Approved' : `${analysis.annotations.length} issue${analysis.annotations.length !== 1 ? 's' : ''}`}
                     </Badge>
                 </div>
                 <button onClick={onClose} className="text-slate-500 hover:text-slate-300 transition-colors">
@@ -197,14 +197,14 @@ function CodeViewer({
                             </div>
 
                             {/* Explanation */}
-                            <div className="glass rounded-lg p-3 border border-white/5">
+                            <div className="bg-white/[0.04] border border-white/5 rounded-lg p-3">
                                 <p className="text-[10px] text-slate-500 mb-1 uppercase tracking-wider font-semibold">Why it&apos;s a problem</p>
                                 <p className="text-xs text-slate-300 leading-relaxed">{selectedAnnotation.explanation}</p>
                             </div>
 
                             {/* Suggestion */}
-                            <div className="glass rounded-lg p-3 border border-indigo-500/10">
-                                <p className="text-[10px] text-indigo-400 mb-1 uppercase tracking-wider font-semibold flex items-center gap-1">
+                            <div className="bg-white/[0.04] border border-[#D4F63C]/10 rounded-lg p-3">
+                                <p className="text-[10px] text-[#D4F63C] mb-1 uppercase tracking-wider font-semibold flex items-center gap-1">
                                     <ArrowRight className="w-2.5 h-2.5" />Recommended Fix
                                 </p>
                                 <p className="text-xs text-slate-300 leading-relaxed">{selectedAnnotation.suggestion}</p>
@@ -213,7 +213,7 @@ function CodeViewer({
                             {/* Fixed code */}
                             {selectedAnnotation.fixed_code && (
                                 <div className="rounded-lg border border-green-500/15 bg-green-500/5 p-3">
-                                    <p className="text-[10px] text-green-400 mb-2 uppercase tracking-wider font-semibold">✓ Improved Code</p>
+                                    <p className="text-[10px] text-green-400 mb-2 uppercase tracking-wider font-semibold">Improved Code</p>
                                     <pre className="text-[10px] font-mono text-green-300 whitespace-pre-wrap break-all leading-5">
                                         {selectedAnnotation.fixed_code}
                                     </pre>
@@ -284,76 +284,81 @@ export default function ArchitecturePage() {
 
     if (loading) {
         return (
-            <div className="space-y-6">
-                <Skeleton className="h-8 w-48 bg-white/5" />
+            <div className="space-y-6 max-w-6xl">
+                <Skeleton className="h-8 w-48 bg-black/5 rounded-xl" />
                 <div className="grid md:grid-cols-2 gap-6">
-                    <Skeleton className="h-96 rounded-xl bg-white/5" />
-                    <Skeleton className="h-96 rounded-xl bg-white/5" />
+                    <Skeleton className="h-96 rounded-2xl bg-black/5" />
+                    <Skeleton className="h-96 rounded-2xl bg-black/5" />
                 </div>
             </div>
         )
     }
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-8 max-w-6xl">
             <div>
-                <h2 className="text-xl font-bold text-slate-100">Architecture View</h2>
-                <p className="text-slate-500 text-sm mt-0.5">
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0D0E12]">Architecture View</h2>
+                <p className="text-[#555962] text-xs sm:text-sm mt-1">
                     {scan?.repository?.fullName
-                        ? <>Analysis of <span className="text-indigo-400 font-mono">{scan.repository.fullName}</span></>
-                        : 'Visual breakdown of your codebase structure and coupling'}
+                        ? <>Analysis of <span className="font-mono font-semibold text-[#0D0E12]">{scan.repository.fullName}</span></>
+                        : 'Visual breakdown of your codebase structure and file coupling'}
                 </p>
             </div>
 
             {!scan ? (
-                <div className="glass rounded-2xl p-16 border border-white/5 text-center">
-                    <Boxes className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-                    <p className="text-slate-400 font-medium">No architecture data yet</p>
-                    <p className="text-slate-600 text-sm mt-1">Run a scan first to see your architecture analysis.</p>
+                <div className="bg-white rounded-[32px] p-16 border border-black/[0.06] shadow-xs text-center max-w-2xl">
+                    <div className="w-16 h-16 rounded-2xl bg-[#F6F7F3] flex items-center justify-center mx-auto mb-4">
+                        <Boxes className="w-8 h-8 text-[#8B907E]" />
+                    </div>
+                    <p className="text-[#0D0E12] font-bold text-lg">No architecture data yet</p>
+                    <p className="text-[#555962] text-sm mt-1">Run a scan first to see your architecture analysis.</p>
                 </div>
             ) : (
                 <>
                     {/* Score + summary */}
                     <div className="grid md:grid-cols-3 gap-4">
-                        <Card className="glass border-white/5 glow-indigo">
-                            <CardContent className="p-5">
-                                <p className="text-xs text-slate-500 mb-2">Architecture Score</p>
-                                <p className="text-5xl font-extrabold gradient-text mb-1">
+                        <div className="bg-white rounded-[28px] p-6 border border-black/[0.06] shadow-xs space-y-1">
+                            <p className="text-xs font-semibold text-[#555962] uppercase tracking-wider">Architecture Score</p>
+                            <div className="flex items-baseline gap-1.5">
+                                <p className="text-5xl font-extrabold text-[#0D0E12] tracking-tight">
                                     {Math.round(scan.architectureScore ?? 0)}
                                 </p>
-                                <p className="text-xs text-slate-600">out of 100</p>
-                            </CardContent>
-                        </Card>
-                        <Card className="glass border-white/5 md:col-span-2">
-                            <CardContent className="p-5">
-                                <p className="text-xs text-slate-500 mb-2">Architecture Assessment</p>
-                                <p className="text-sm text-slate-300 leading-relaxed">
-                                    {scan.architectureSummary ?? 'No architecture summary available.'}
-                                </p>
-                            </CardContent>
-                        </Card>
+                                <span className="text-sm text-[#8B907E]">/ 100</span>
+                            </div>
+                            <div className="pt-1">
+                                <span className="inline-block px-3 py-1 rounded-full bg-[#D4F63C] text-[#0D0E12] text-[11px] font-bold">
+                                    {(scan.architectureScore ?? 0) >= 80 ? 'Healthy' : (scan.architectureScore ?? 0) >= 60 ? 'Moderate' : 'Needs Work'}
+                                </span>
+                            </div>
+                        </div>
+                        <div className="bg-white rounded-[28px] p-6 border border-black/[0.06] shadow-xs md:col-span-2">
+                            <p className="text-xs font-semibold text-[#555962] mb-2 uppercase tracking-wider">Architecture Assessment</p>
+                            <p className="text-sm text-[#0D0E12] leading-relaxed">
+                                {scan.architectureSummary ?? 'No architecture summary available.'}
+                            </p>
+                        </div>
                     </div>
 
                     {/* File tree + Code Viewer / Detail panel */}
                     <div className="grid md:grid-cols-2 gap-6">
                         {/* File tree */}
-                        <Card className="glass border-white/5">
-                            <CardHeader>
-                                <CardTitle className="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                                    <GitBranch className="w-4 h-4 text-indigo-400" />
+                        <Card className="bg-white border-black/[0.06] shadow-xs rounded-[28px]">
+                            <CardHeader className="pb-0">
+                                <CardTitle className="text-sm font-bold text-[#0D0E12] flex items-center gap-2">
+                                    <GitBranch className="w-4 h-4 text-[#555962]" />
                                     File Structure
                                     {scan.repository?.fullName && (
-                                        <span className="text-[10px] font-mono text-slate-500 ml-1">
+                                        <span className="text-[10px] font-mono text-[#8B907E] ml-1">
                                             · {scan.repository.fullName}
                                         </span>
                                     )}
                                 </CardTitle>
                             </CardHeader>
-                            <CardContent>
+                            <CardContent className="pt-4">
                                 <div className="space-y-3 max-h-[480px] overflow-y-auto pr-1">
                                     {dirs.map(dir => (
                                         <div key={dir}>
-                                            <p className="text-xs text-slate-500 font-mono mb-1.5 flex items-center gap-1">
+                                            <p className="text-xs text-[#555962] font-mono mb-1.5 flex items-center gap-1">
                                                 <Boxes className="w-3 h-3" />
                                                 {dir === '.' ? 'root' : dir}
                                             </p>
@@ -367,22 +372,22 @@ export default function ArchitecturePage() {
                                                         <button
                                                             key={file}
                                                             onClick={() => analyzeFile(fullPath)}
-                                                            className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-left transition-all group ${isSelected
-                                                                ? 'bg-indigo-600/20 border border-indigo-500/20'
-                                                                : 'hover:bg-white/5 border border-transparent'
+                                                            className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl text-left transition-all ${isSelected
+                                                                ? 'bg-[#D4F63C]/20 border border-[#D4F63C]/40'
+                                                                : 'hover:bg-[#FAFAF8] border border-transparent'
                                                                 }`}
                                                         >
-                                                            <span className="text-xs text-slate-300 font-mono truncate flex-1">{file}</span>
+                                                            <span className="text-xs text-[#0D0E12] font-mono truncate flex-1">{file}</span>
                                                             <div className="flex items-center gap-2 ml-2 flex-shrink-0">
                                                                 {review && (
-                                                                    <span className="text-xs text-slate-500">{Math.round(review.fileScore ?? 0)}</span>
+                                                                    <span className="text-xs text-[#555962]">{Math.round(review.fileScore ?? 0)}</span>
                                                                 )}
                                                                 <span className={`w-1.5 h-1.5 rounded-full ${risk === 'critical' ? 'bg-red-500' :
                                                                     risk === 'high' ? 'bg-orange-500' :
-                                                                        risk === 'medium' ? 'bg-amber-500' : 'bg-green-500'
+                                                                        risk === 'medium' ? 'bg-amber-500' : 'bg-emerald-500'
                                                                     }`} />
                                                                 {isSelected && fileAnalysis && (
-                                                                    <ChevronRight className="w-3 h-3 text-indigo-400" />
+                                                                    <ChevronRight className="w-3 h-3 text-[#0D0E12]" />
                                                                 )}
                                                             </div>
                                                         </button>
@@ -396,18 +401,22 @@ export default function ArchitecturePage() {
                         </Card>
 
                         {/* Right panel — Code Viewer or Issue list */}
-                        <Card className="glass border-white/5 overflow-hidden" style={{ maxHeight: '560px' }}>
+                        <div className="rounded-[28px] overflow-hidden border border-black/[0.06] shadow-xs" style={{ maxHeight: '560px' }}>
                             {analyzing ? (
-                                <div className="flex flex-col items-center justify-center h-64 gap-3">
-                                    <Loader2 className="w-7 h-7 text-indigo-400 animate-spin" />
-                                    <p className="text-slate-400 text-sm">Running AI analysis...</p>
-                                    <p className="text-slate-600 text-xs">Fetching file &amp; inspecting each line</p>
+                                <div className="flex flex-col items-center justify-center h-64 gap-3 bg-white">
+                                    <div className="w-12 h-12 rounded-2xl bg-[#0D0E12] flex items-center justify-center">
+                                        <Loader2 className="w-6 h-6 text-[#D4F63C] animate-spin" />
+                                    </div>
+                                    <p className="text-[#0D0E12] font-bold text-sm">Running AI analysis...</p>
+                                    <p className="text-[#555962] text-xs">Fetching file & inspecting each line</p>
                                 </div>
                             ) : analyzeError ? (
-                                <div className="flex flex-col items-center justify-center h-64 gap-3">
-                                    <AlertTriangle className="w-7 h-7 text-red-400" />
-                                    <p className="text-slate-400 text-sm">{analyzeError}</p>
-                                    <Button size="sm" variant="ghost" className="text-indigo-400" onClick={() => selectedFile && analyzeFile(selectedFile)}>
+                                <div className="flex flex-col items-center justify-center h-64 gap-3 bg-white">
+                                    <div className="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center">
+                                        <AlertTriangle className="w-6 h-6 text-red-600" />
+                                    </div>
+                                    <p className="text-[#0D0E12] font-bold text-sm">{analyzeError}</p>
+                                    <Button size="sm" variant="ghost" className="text-[#0D0E12] border border-black/10 rounded-xl" onClick={() => selectedFile && analyzeFile(selectedFile)}>
                                         Retry
                                     </Button>
                                 </div>
@@ -418,40 +427,29 @@ export default function ArchitecturePage() {
                                         onClose={() => { setFileAnalysis(null); setSelectedFile(null) }}
                                     />
                                 </div>
-                            ) : selectedFile === null ? (
-                                // Legacy issue list when no file selected
-                                <>
-                                    <CardHeader>
-                                        <CardTitle className="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                                            <AlertTriangle className="w-4 h-4 text-amber-400" />
-                                            File Analysis
-                                        </CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="flex flex-col items-center justify-center h-40 text-center">
-                                            <GitBranch className="w-10 h-10 text-slate-600 mb-3" />
-                                            <p className="text-slate-500 text-sm">Click a file to run AI line-by-line analysis</p>
-                                            <p className="text-slate-600 text-xs mt-1">Highlights risky lines with severity and fix suggestions</p>
-                                        </div>
-                                    </CardContent>
-                                </>
-                            ) : null}
-                        </Card>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center h-64 text-center bg-white">
+                                    <div className="w-12 h-12 rounded-2xl bg-[#F6F7F3] flex items-center justify-center mx-auto mb-3">
+                                        <GitBranch className="w-6 h-6 text-[#8B907E]" />
+                                    </div>
+                                    <p className="text-[#0D0E12] font-bold text-sm">Select a file to analyze</p>
+                                    <p className="text-[#555962] text-xs mt-1 max-w-xs">Click any file to run AI line-by-line analysis with severity and fix suggestions</p>
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     {/* Security summary */}
                     {scan.securitySummary && (
-                        <Card className="glass border-red-500/10">
-                            <CardHeader>
-                                <CardTitle className="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                                    <AlertTriangle className="w-4 h-4 text-red-400" />
-                                    Security Summary
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-sm text-slate-400 leading-relaxed">{scan.securitySummary}</p>
-                            </CardContent>
-                        </Card>
+                        <div className="bg-red-50 rounded-[28px] p-6 border border-red-200">
+                            <div className="flex items-center gap-2 mb-3">
+                                <div className="w-8 h-8 rounded-xl bg-red-100 flex items-center justify-center">
+                                    <AlertTriangle className="w-4 h-4 text-red-600" />
+                                </div>
+                                <h3 className="text-sm font-bold text-red-800">Security Summary</h3>
+                            </div>
+                            <p className="text-sm text-red-700 leading-relaxed">{scan.securitySummary}</p>
+                        </div>
                     )}
                 </>
             )}

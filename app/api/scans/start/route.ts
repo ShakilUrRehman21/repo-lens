@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
         let dbUser = await db.query.users.findFirst({ where: eq(users.clerkId, clerkUser.id) })
         if (!dbUser) return NextResponse.json({ error: 'User not found' }, { status: 404 })
 
-        // Rate limit: free = 3 scans/day
+        // Rate limit: 50 scans/day for free users
         if (dbUser.plan === 'free') {
             const today = new Date()
             today.setHours(0, 0, 0, 0)
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
                 .from(usageLogs)
                 .where(and(eq(usageLogs.userId, dbUser.id), gte(usageLogs.timestamp, today)))
 
-            if ((result?.value ?? 0) >= 7) {
+            if ((result?.value ?? 0) >= 50) {
                 return NextResponse.json(
                     { error: 'Daily scan limit reached. Upgrade to Pro for unlimited scans.' },
                     { status: 429 }
@@ -57,24 +57,26 @@ export async function POST(request: NextRequest) {
             }
         }
 
-        if (!dbUser.githubAccessToken) {
-            return NextResponse.json(
-                { error: 'No GitHub token found. Please sign in with GitHub to enable scanning.' },
-                { status: 400 }
-            )
-        }
-
         // Create scan record
         const [scan] = await db
             .insert(scans)
             .values({ repoId, scanStatus: 'pending', progressMessage: 'Starting analysis...' })
             .returning()
 
-        // Log usage
+        // Log usage attempt
         await db.insert(usageLogs).values({ userId: dbUser.id, scanType: 'full', tokensUsed: 0 })
 
+        // Decrypt token if present (or pass empty string for unauthenticated public repo scan)
+        let token = ''
+        if (dbUser.githubAccessToken) {
+            try {
+                token = decrypt(dbUser.githubAccessToken)
+            } catch (e) {
+                console.warn('Failed to decrypt user GitHub token:', e)
+            }
+        }
+
         // Run pipeline in background (non-blocking)
-        const token = decrypt(dbUser.githubAccessToken)
         runAnalysisPipeline(scan.id, repo.fullName, token).catch(console.error)
 
         return NextResponse.json({ scanId: scan.id, status: 'pending' })
@@ -83,4 +85,3 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }
 }
-

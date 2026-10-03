@@ -5,7 +5,7 @@ File: ${filePath}
 
 Code:
 \`\`\`
-${content.slice(0, 8000)}
+${content.slice(0, 2200)}
 \`\`\`
 
 Return this exact JSON structure:
@@ -25,8 +25,7 @@ Return this exact JSON structure:
 
 Rules:
 - file_score: 100 = perfect, 0 = totally broken
-- Detect: code smells, naming issues, complexity, best practice violations
-- Maximum 5 issues per file
+- Maximum 4 issues per file
 - Never return unstructured text, only the JSON object
 `
 
@@ -34,7 +33,7 @@ export const ARCHITECTURE_PROMPT = (structure: string) => `
 You are a software architect. Analyze the repository structure and return ONLY a JSON object.
 
 Repository structure:
-${structure}
+${structure.slice(0, 1500)}
 
 Return this exact JSON structure:
 {
@@ -61,7 +60,7 @@ You are a security auditor. Analyze these code files for security vulnerabilitie
 Return ONLY a JSON object.
 
 Files:
-${files.map(f => `--- ${f.path} ---\n${f.content.slice(0, 3000)}`).join('\n\n')}
+${files.slice(0, 3).map(f => `--- ${f.path} ---\n${f.content.slice(0, 800)}`).join('\n\n')}
 
 Return this exact JSON structure:
 {
@@ -87,7 +86,7 @@ You are a scalability expert. Analyze these code files for scalability issues.
 Return ONLY a JSON object.
 
 Files:
-${files.map(f => `--- ${f.path} ---\n${f.content.slice(0, 3000)}`).join('\n\n')}
+${files.slice(0, 3).map(f => `--- ${f.path} ---\n${f.content.slice(0, 800)}`).join('\n\n')}
 
 Return this exact JSON structure:
 {
@@ -114,88 +113,78 @@ You are a technical debt analyst. Calculate the technical debt index from these 
 Return ONLY a JSON object.
 
 File metrics:
-${JSON.stringify(fileScores, null, 2)}
+${JSON.stringify(fileScores.slice(0, 8), null, 2)}
 
 Return this exact JSON structure:
 {
-  "technical_debt_index": <number 0-100, where 100 = maximum debt>,
+  "technical_debt_index": <number 0-100, where 0=none, 100=extreme>,
   "maintainability_score": <number 0-100>,
-  "high_risk_files": ["<file_path>"],
-  "urgency_score": <number 0-10>,
+  "high_risk_files": ["<file path>"],
+  "urgency_score": <number 0-100>,
   "refactor_priority": [
     {
       "file": "<file path>",
-      "reason": "<why this file should be refactored first>",
+      "reason": "<why this file needs refactoring>",
       "estimated_effort": "<low|medium|high>"
     }
   ],
-  "summary": "<2-3 sentence technical debt summary>"
+  "summary": "<2-3 sentence technical debt assessment>"
 }
 
 Never return unstructured text, only the JSON object.
 `
 
-export const PR_REVIEW_PROMPT = (diff: string, prTitle: string) => `
-You are a senior code reviewer. Analyze this GitHub Pull Request diff and return ONLY a JSON object.
+export const LINE_ANALYSIS_PROMPT = (filePath: string, content: string) => `
+You are an expert static analysis engine. Perform line-by-line code review on this file:
+File: ${filePath}
 
-PR Title: ${prTitle}
+Code:
+\`\`\`
+${content.slice(0, 2500)}
+\`\`\`
+
+Return this exact JSON structure:
+{
+  "status": "issues_found",
+  "summary": "<concise summary>",
+  "overall_score": <number 0-100>,
+  "annotations": [
+    {
+      "line": <line number>,
+      "type": "bug",
+      "severity": "medium",
+      "title": "<short title>",
+      "explanation": "<explanation>",
+      "suggestion": "<fix suggestion>",
+      "fixed_code": "<code snippet>"
+    }
+  ]
+}
+`
+
+export const PR_REVIEW_PROMPT = (diff: string, title?: string, desc?: string) => `
+You are a senior code reviewer reviewing a pull request diff.
+PR Title: ${title || 'PR Review'}
 
 Diff:
-\`\`\`
-${diff.slice(0, 12000)}
+\`\`\`diff
+${diff.slice(0, 2500)}
 \`\`\`
 
 Return this exact JSON structure:
 {
   "risk_score": <number 0-100>,
   "breaking_change_probability": <number 0-100>,
-  "overall_quality": "<poor|fair|good|excellent>",
-  "summary": "<concise PR review summary>",
+  "overall_quality": "<good|needs_work|critical>",
+  "summary": "<markdown summary>",
   "issues": [
     {
       "file": "<file path>",
       "problem": "<issue description>",
-      "severity": "<low|medium|high|critical>",
-      "suggestion": "<improvement recommendation>"
+      "severity": "medium",
+      "suggestion": "<recommendation>"
     }
   ],
-  "pr_comment": "<formatted markdown comment to post on the PR>"
+  "pr_comment": "<markdown comment for GitHub PR>"
 }
-
-Never return unstructured text, only the JSON object.
-`
-
-export const LINE_ANALYSIS_PROMPT = (filePath: string, numberedContent: string) => `
-You are an expert security and code quality auditor. Perform a PRECISE line-by-line analysis.
-Return ONLY a JSON object — no markdown, no explanation.
-
-File: ${filePath}
-
-Code (with line numbers):
-${numberedContent.slice(0, 12000)}
-
-Return this EXACT JSON structure:
-{
-  "status": "<approved|issues_found>",
-  "summary": "<2-3 sentence technical assessment>",
-  "overall_score": <number 0-100>,
-  "annotations": [
-    {
-      "line": <exact integer line number>,
-      "type": "<bug|vulnerability|bad_practice|performance|security>",
-      "severity": "<low|medium|high|critical>",
-      "title": "<short one-line issue title>",
-      "explanation": "<precise technical explanation of why this is problematic>",
-      "suggestion": "<brief recommended fix description>",
-      "fixed_code": "<exact replacement code snippet>"
-    }
-  ]
-}
-
-RULES:
-- Only flag REAL issues with exact line numbers from the numbered code.
-- If code is clean: return status "approved", empty annotations [].
-- Focus on: hardcoded secrets, SQL injection, unsafe eval, XSS, missing error handling,
-  insecure auth, race conditions, memory leaks.
-- Max 10 annotations. Return ONLY the JSON object.
 `

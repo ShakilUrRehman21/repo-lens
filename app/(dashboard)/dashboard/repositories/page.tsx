@@ -160,7 +160,7 @@ export default function RepositoriesPage() {
                     ...prev,
                     [repoId]: d.scan.scanStatus === 'completed'
                         ? `✓ Score: ${Math.round(d.scan.overallScore ?? 0)}`
-                        : '✗ Failed – check console',
+                        : (d.scan.progressMessage ? `✗ ${d.scan.progressMessage.replace(/^Analysis failed:\s*/i, '')}` : '✗ Scan failed'),
                 }))
                 // Refetch repos so lastScannedAt + scan count refresh
                 fetch('/api/repos')
@@ -173,16 +173,17 @@ export default function RepositoriesPage() {
 
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-8 max-w-6xl">
             <div>
-                <h2 className="text-xl font-bold text-slate-100">Repositories</h2>
-                <p className="text-slate-500 text-sm mt-0.5">Import and analyze your GitHub repositories</p>
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0D0E12]">Repositories</h2>
+                <p className="text-[#555962] text-xs sm:text-sm mt-1">Connect and analyze your GitHub repositories with 5-stage AI</p>
             </div>
 
             {/* ——— URL IMPORT ——— */}
-            <div className="glass rounded-xl p-4 border border-indigo-500/20">
-                <p className="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <Link2 className="w-3.5 h-3.5" /> Add Repository by URL
+            <div className="bg-white rounded-[28px] p-6 sm:p-7 border border-black/[0.06] shadow-xs">
+                <p className="text-xs font-bold text-[#0D0E12] uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <Link2 className="w-4 h-4 text-black" />
+                    <span>Connect Repository by URL</span>
                 </p>
                 <div className="flex gap-2">
                     <Input
@@ -190,24 +191,24 @@ export default function RepositoriesPage() {
                         value={urlInput}
                         onChange={e => { setUrlInput(e.target.value); setUrlError(null); setUrlSuccess(null) }}
                         onKeyDown={e => e.key === 'Enter' && handleUrlImport()}
-                        className="flex-1 bg-white/5 border-white/10 text-slate-200 placeholder:text-slate-600 focus:border-indigo-500/50"
+                        className="flex-1 bg-[#FAFAF8] border-black/10 text-[#0D0E12] placeholder:text-[#8B907E] focus:border-black rounded-xl h-11"
                         disabled={urlImporting}
                     />
                     <Button
                         onClick={handleUrlImport}
                         disabled={urlImporting || !urlInput.trim()}
-                        className="bg-indigo-600 hover:bg-indigo-500 text-white px-5"
+                        className="bg-[#D4F63C] hover:bg-[#cbf02e] text-[#0D0E12] font-bold px-6 rounded-xl h-11 shadow-xs transition-all"
                     >
-                        {urlImporting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Import'}
+                        {urlImporting ? <Loader2 className="w-4 h-4 animate-spin text-black" /> : 'Import Repo'}
                     </Button>
                 </div>
                 {urlError && (
-                    <p className="text-red-400 text-xs mt-2 flex items-center gap-1.5">
+                    <p className="text-red-600 text-xs mt-2 flex items-center gap-1.5 font-medium">
                         <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />{urlError}
                     </p>
                 )}
                 {urlSuccess && (
-                    <p className="text-green-400 text-xs mt-2 flex items-center gap-1.5">
+                    <p className="text-emerald-700 text-xs mt-2 flex items-center gap-1.5 font-medium">
                         <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />{urlSuccess}
                     </p>
                 )}
@@ -215,19 +216,19 @@ export default function RepositoriesPage() {
 
             {/* ——— CONNECTED REPOS ——— */}
             {importedRepos.length > 0 && (
-                <div>
-                    <h3 className="text-xs font-semibold text-slate-400 mb-3 uppercase tracking-wider">Connected Repos</h3>
+                <div className="space-y-3">
+                    <h3 className="text-xs font-bold text-[#555962] uppercase tracking-wider">Connected Repositories</h3>
                     <div className="grid gap-3">
                         {importedRepos.map(repo => (
-                            <Card key={repo.id} className="glass border-white/5 glass-hover">
-                                <CardContent className="flex items-center justify-between p-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-9 h-9 rounded-lg bg-indigo-600/20 border border-indigo-500/20 flex items-center justify-center">
-                                            <GitBranch className="w-4 h-4 text-indigo-400" />
+                            <Card key={repo.id} className="bg-white border-black/[0.06] rounded-2xl shadow-xs hover:shadow-sm transition-all">
+                                <CardContent className="flex items-center justify-between p-4 sm:p-5">
+                                    <div className="flex items-center gap-3.5">
+                                        <div className="w-10 h-10 rounded-xl bg-[#0D0E12] text-[#D4F63C] flex items-center justify-center font-bold">
+                                            <GitBranch className="w-5 h-5" />
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-slate-100 text-sm">{repo.fullName}</p>
-                                            <p className="text-xs text-slate-500">
+                                            <p className="font-bold text-[#0D0E12] text-sm">{repo.fullName}</p>
+                                            <p className="text-xs text-[#555962]">
                                                 {repo.language ?? 'Unknown'} · {repo.lastScannedAt
                                                     ? `Scanned ${new Date(repo.lastScannedAt).toLocaleDateString()}`
                                                     : 'Never scanned'}
@@ -236,17 +237,17 @@ export default function RepositoriesPage() {
                                     </div>
                                     <div className="flex items-center gap-2">
                                         {scanStatus[repo.id] && (
-                                            <span className="text-xs text-slate-400 max-w-[200px] truncate">{scanStatus[repo.id]}</span>
+                                            <span className="text-xs text-[#555962] max-w-[200px] truncate font-mono">{scanStatus[repo.id]}</span>
                                         )}
                                         <Button
                                             size="sm"
-                                            className="bg-indigo-600 hover:bg-indigo-500 text-white h-8"
+                                            className="bg-[#D4F63C] hover:bg-[#cbf02e] text-[#0D0E12] font-bold h-9 px-4 rounded-xl shadow-xs"
                                             disabled={scanningId === repo.id}
                                             onClick={() => handleScan(repo.id)}
                                         >
                                             {scanningId === repo.id
-                                                ? <><Loader2 className="w-3 h-3 mr-1 animate-spin" />Analyzing</>
-                                                : <><RefreshCw className="w-3 h-3 mr-1" />Scan</>}
+                                                ? <><Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin text-black" />Analyzing</>
+                                                : <><RefreshCw className="w-3.5 h-3.5 mr-1.5" />Scan</>}
                                         </Button>
                                     </div>
                                 </CardContent>
@@ -257,32 +258,35 @@ export default function RepositoriesPage() {
             )}
 
             {/* ——— GITHUB OAUTH REPO LIST ——— */}
-            <div>
-                <h3 className="text-xs font-semibold text-slate-400 mb-3 uppercase tracking-wider">Your GitHub Repositories</h3>
-                <div className="relative mb-4">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+            <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                    <h3 className="text-xs font-bold text-[#555962] uppercase tracking-wider">Your GitHub Repositories</h3>
+                    <span className="text-xs text-[#8B907E] font-medium">{filtered.length} found</span>
+                </div>
+                <div className="relative">
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8B907E]" />
                     <Input
                         placeholder="Search repositories..."
                         value={search}
                         onChange={e => setSearch(e.target.value)}
-                        className="pl-9 bg-white/5 border-white/10 text-slate-200 placeholder:text-slate-600 focus:border-indigo-500/50"
+                        className="pl-10 bg-white border-black/10 text-[#0D0E12] placeholder:text-[#8B907E] focus:border-black rounded-xl h-11"
                     />
                 </div>
 
                 {loading ? (
                     <div className="space-y-3">
-                        {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-20 rounded-xl bg-white/5" />)}
+                        {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-20 rounded-2xl bg-white border border-black/[0.06]" />)}
                     </div>
                 ) : filtered.length === 0 ? (
-                    <div className="glass rounded-xl p-12 border border-white/5 text-center">
-                        <GitBranch className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-                        <p className="text-slate-400 font-medium">
-                            {githubRepos.length === 0 ? 'No GitHub repos loaded' : 'No repositories match your search'}
+                    <div className="bg-white rounded-3xl p-12 border border-black/[0.06] shadow-xs text-center">
+                        <GitBranch className="w-10 h-10 text-[#8B907E] mx-auto mb-3" />
+                        <p className="text-[#0D0E12] font-bold">
+                            {githubRepos.length === 0 ? 'No GitHub repositories loaded' : 'No repositories match your search'}
                         </p>
-                        <p className="text-slate-600 text-sm mt-1">
+                        <p className="text-[#555962] text-xs mt-1">
                             {githubRepos.length === 0
-                                ? 'Sign in with GitHub or use the URL import above to add repos.'
-                                : 'Try a different search term.'}
+                                ? 'Connect your GitHub account or use the URL import above to start.'
+                                : 'Try searching with a different term.'}
                         </p>
                     </div>
                 ) : (
@@ -293,33 +297,33 @@ export default function RepositoriesPage() {
                             return (
                                 <Card
                                     key={repo.id}
-                                    className={`glass border-white/5 glass-hover cursor-pointer transition-all ${isImported ? 'border-green-500/20' : ''}`}
+                                    className={`bg-white border-black/[0.06] rounded-2xl shadow-xs hover:shadow-sm cursor-pointer transition-all ${isImported ? 'border-emerald-500/30' : ''}`}
                                     onClick={() => !isImported && setModal(repo)}
                                 >
-                                    <CardContent className="flex items-start justify-between p-4">
+                                    <CardContent className="flex items-start justify-between p-4 sm:p-5">
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center gap-2 mb-1">
-                                                <p className="font-semibold text-slate-100 text-sm truncate">{repo.fullName}</p>
+                                                <p className="font-bold text-[#0D0E12] text-sm truncate">{repo.fullName}</p>
                                                 {repo.isPrivate
-                                                    ? <Badge className="bg-slate-700/50 text-slate-400 border-slate-600/30 text-[10px]"><Lock className="w-2.5 h-2.5 mr-1" />Private</Badge>
-                                                    : <Badge className="bg-slate-700/50 text-slate-400 border-slate-600/30 text-[10px]"><Globe className="w-2.5 h-2.5 mr-1" />Public</Badge>}
+                                                    ? <Badge className="bg-[#F6F7F3] text-[#555962] border-black/10 text-[10px]"><Lock className="w-2.5 h-2.5 mr-1" />Private</Badge>
+                                                    : <Badge className="bg-[#F6F7F3] text-[#555962] border-black/10 text-[10px]"><Globe className="w-2.5 h-2.5 mr-1" />Public</Badge>}
                                             </div>
                                             {repo.description && (
-                                                <p className="text-xs text-slate-500 truncate max-w-md mb-2">{repo.description}</p>
+                                                <p className="text-xs text-[#555962] truncate max-w-md mb-2">{repo.description}</p>
                                             )}
-                                            <div className="flex items-center gap-3 text-xs text-slate-600">
+                                            <div className="flex items-center gap-3 text-xs text-[#8B907E]">
                                                 {repo.language && (
-                                                    <span className="flex items-center gap-1">
+                                                    <span className="flex items-center gap-1 font-medium">
                                                         <span className={`w-2 h-2 rounded-full ${langColor}`} />{repo.language}
                                                     </span>
                                                 )}
-                                                <span className="flex items-center gap-1"><Star className="w-3 h-3" />{repo.stargazersCount}</span>
+                                                <span className="flex items-center gap-1 font-medium"><Star className="w-3 h-3" />{repo.stargazersCount}</span>
                                             </div>
                                         </div>
                                         <div className="ml-4 flex-shrink-0">
                                             {isImported
-                                                ? <Badge className="bg-green-500/20 text-green-400 border-green-500/30"><CheckCircle2 className="w-3 h-3 mr-1" />Connected</Badge>
-                                                : <Badge className="bg-indigo-600/20 text-indigo-400 border-indigo-500/30"><Plus className="w-3 h-3 mr-1" />Import</Badge>}
+                                                ? <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 font-bold"><CheckCircle2 className="w-3 h-3 mr-1" />Connected</Badge>
+                                                : <Badge className="bg-[#0D0E12] hover:bg-black text-[#D4F63C] font-bold"><Plus className="w-3 h-3 mr-1" />Connect</Badge>}
                                         </div>
                                     </CardContent>
                                 </Card>
@@ -331,33 +335,33 @@ export default function RepositoriesPage() {
 
             {/* ——— IMPORT MODAL ——— */}
             <Dialog open={!!modal} onOpenChange={() => setModal(null)}>
-                <DialogContent className="bg-[#0d0e14] border border-white/10 text-slate-100">
+                <DialogContent className="bg-white border border-black/[0.08] text-[#0D0E12] rounded-3xl p-6 shadow-xl">
                     <DialogHeader>
-                        <DialogTitle className="flex items-center gap-2">
-                            <GitBranch className="w-5 h-5 text-indigo-400" />Import Repository
+                        <DialogTitle className="flex items-center gap-2 text-lg font-bold text-[#0D0E12]">
+                            <GitBranch className="w-5 h-5 text-black" />Import Repository
                         </DialogTitle>
-                        <DialogDescription className="text-slate-500">
-                            Connect <span className="text-indigo-400 font-medium">{modal?.fullName}</span> to GithubScanner.
+                        <DialogDescription className="text-xs text-[#555962]">
+                            Connect <span className="font-bold text-[#0D0E12]">{modal?.fullName}</span> to RepoLens.
                         </DialogDescription>
                     </DialogHeader>
                     {modal && (
-                        <div className="space-y-4 mt-2">
-                            <div className="glass rounded-lg p-4 border border-white/5 space-y-2 text-sm">
+                        <div className="space-y-4 mt-3">
+                            <div className="bg-[#FAFAF8] rounded-2xl p-4 border border-black/[0.06] space-y-2 text-xs">
                                 {[['Branch', modal.defaultBranch], ['Language', modal.language ?? 'Unknown'], ['Visibility', modal.isPrivate ? 'Private' : 'Public']].map(([label, val]) => (
                                     <div key={label} className="flex justify-between">
-                                        <span className="text-slate-500">{label}</span>
-                                        <span className="text-slate-200 font-mono">{val}</span>
+                                        <span className="text-[#555962]">{label}</span>
+                                        <span className="text-[#0D0E12] font-mono font-semibold">{val}</span>
                                     </div>
                                 ))}
                             </div>
-                            <div className="flex gap-3">
-                                <Button variant="ghost" className="flex-1 border border-white/10" onClick={() => setModal(null)}>Cancel</Button>
+                            <div className="flex gap-3 pt-2">
+                                <Button variant="ghost" className="flex-1 border border-black/10 rounded-xl" onClick={() => setModal(null)}>Cancel</Button>
                                 <Button
-                                    className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white"
+                                    className="flex-1 bg-[#D4F63C] hover:bg-[#cbf02e] text-[#0D0E12] font-bold rounded-xl shadow-xs"
                                     disabled={importingId === modal.id}
                                     onClick={() => handleImport(modal)}
                                 >
-                                    {importingId === modal.id ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Importing...</> : 'Confirm Import'}
+                                    {importingId === modal.id ? <><Loader2 className="w-4 h-4 mr-2 animate-spin text-black" />Importing...</> : 'Confirm Import'}
                                 </Button>
                             </div>
                         </div>
