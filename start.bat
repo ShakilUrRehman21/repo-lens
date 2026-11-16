@@ -4,6 +4,7 @@ cd /d "%~dp0"
 set NEED_INSTALL=
 if not exist node_modules\.bin\next.cmd set NEED_INSTALL=1
 if not exist node_modules\framer-motion set NEED_INSTALL=1
+if not exist node_modules\@vercel\functions set NEED_INSTALL=1
 if defined NEED_INSTALL (
   echo Installing dependencies, this can take a few minutes...
   call npm install

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { currentUser } from '@clerk/nextjs/server'
 import { db } from '@/db'
+import { expireIfStale } from '@/lib/scan-staleness'
 import { requireOwnedScan } from '@/lib/scan-access'
 import { scans, repositories } from '@/db/schema'
 import { eq } from 'drizzle-orm'
@@ -28,5 +29,5 @@ export async function GET(
         return NextResponse.json({ error: 'Scan not found' }, { status: 404 })
     }
 
-    return NextResponse.json({ scan })
+    return NextResponse.json({ scan: await expireIfStale(scan) })
 }

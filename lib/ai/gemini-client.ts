@@ -7,7 +7,7 @@ const MODELS = [
     'openai/gpt-oss-20b',     // Lightweight fallback
 ]
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY! })
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY!, timeout: 45_000, maxRetries: 0 })
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 

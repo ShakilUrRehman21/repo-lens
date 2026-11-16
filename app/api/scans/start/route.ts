@@ -2,9 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { currentUser, clerkClient } from '@clerk/nextjs/server'
 import { db } from '@/db'
 import { users, repositories, scans, usageLogs } from '@/db/schema'
-import { eq, and, gte, count } from 'drizzle-orm'
+import { eq, and, gte, count, inArray, desc } from 'drizzle-orm'
+import { waitUntil } from '@vercel/functions'
+import { isStale, expireIfStale } from '@/lib/scan-staleness'
 import { decrypt, encrypt } from '@/lib/crypto'
 import { runAnalysisPipeline } from '@/lib/ai/pipeline'
+
+// Allow the background analysis to keep running after the response is sent.
+export const maxDuration = 300
 
 export async function POST(request: NextRequest) {
     try {
@@ -39,6 +44,18 @@ export async function POST(request: NextRequest) {
         })
         if (!repo) return NextResponse.json({ error: 'Repository not found' }, { status: 404 })
 
+        // Reuse a scan that is already running for this repository instead of starting a duplicate.
+        const running = await db.query.scans.findFirst({
+            where: and(eq(scans.repoId, repo.id), inArray(scans.scanStatus, ['pending', 'processing'])),
+            orderBy: [desc(scans.createdAt)],
+        })
+        if (running) {
+            if (!isStale(running)) {
+                return NextResponse.json({ scanId: running.id, status: running.scanStatus, reused: true })
+            }
+            await expireIfStale(running)
+        }
+
         // Auto-fetch GitHub token from Clerk if not stored
         if (!dbUser.githubAccessToken) {
             try {
@@ -60,7 +77,7 @@ export async function POST(request: NextRequest) {
         // Create scan record
         const [scan] = await db
             .insert(scans)
-            .values({ repoId, scanStatus: 'pending', progressMessage: 'Starting analysis...' })
+            .values({ repoId: repo.id, scanStatus: 'pending', progressMessage: 'Starting analysis...' })
             .returning()
 
         // Log usage attempt
@@ -76,8 +93,8 @@ export async function POST(request: NextRequest) {
             }
         }
 
-        // Run pipeline in background (non-blocking)
-        runAnalysisPipeline(scan.id, repo.fullName, token).catch(console.error)
+        // Run the pipeline after responding. waitUntil keeps the serverless function alive until it finishes.
+        waitUntil(runAnalysisPipeline(scan.id, repo.fullName, token).catch((e) => console.error('[scans/start] pipeline error:', e)))
 
         return NextResponse.json({ scanId: scan.id, status: 'pending' })
     } catch (err) {

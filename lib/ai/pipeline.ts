@@ -16,6 +16,41 @@ import type { Issue } from '@/db/schema'
 const SKIP_DIRS = ['node_modules', 'dist', 'build', 'coverage', '.git', '.next', 'out', '__pycache__', 'vendor', 'public', 'assets', '.github']
 const SKIP_EXTS = ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff', '.woff2', '.ttf', '.eot', '.mp4', '.mp3', '.pdf', '.zip', '.lock', '.map', '.min.js', '.min.css']
 const MAX_FILE_SIZE = 150 * 1024 // 150KB
+const FILES_TO_ANALYZE = 10
+const CHARS_PER_FILE = 6000
+const SECURITY_SAMPLE = 5
+const NON_CODE_EXTS = ['.md', '.mdx', '.txt', '.json', '.yml', '.yaml', '.toml', '.css', '.scss', '.html', '.xml', '.csv', '.ini', '.cfg']
+
+function isSecretFile(path: string): boolean {
+    const name = path.split('/').pop()?.toLowerCase() ?? ''
+    return name.startsWith('.env') || name.endsWith('.pem') || name.endsWith('.key') || name === 'id_rsa'
+}
+
+function clampScore(value: unknown): number | null {
+    const n = typeof value === 'number' ? value : Number(value)
+    if (!Number.isFinite(n)) return null
+    return Math.round(Math.min(100, Math.max(0, n)))
+}
+
+function requireScore(value: unknown, stage: string): number {
+    const n = clampScore(value)
+    if (n === null) throw new Error(`The AI returned an incomplete ${stage} review. Please run the scan again.`)
+    return n
+}
+
+/** Turns GitHub API failures into messages a user can act on. */
+function describeGitHubError(err: any): string | null {
+    const status = err?.status ?? err?.response?.status
+    if (status === 404) return 'Repository not found or not accessible. If it is private, reconnect GitHub and try again.'
+    if (status === 401) return 'Your GitHub connection has expired. Please reconnect GitHub and try again.'
+    if (status === 403 || status === 429) {
+        const msg = String(err?.message ?? '')
+        if (msg.toLowerCase().includes('rate limit')) return 'GitHub rate limit reached. Please wait a few minutes, or connect GitHub for a higher limit.'
+        return 'GitHub denied access to this repository. Reconnect GitHub with access to it and try again.'
+    }
+    if (status === 409) return 'This repository is empty, so there is nothing to scan yet.'
+    return null
+}
 
 type FileAnalysisResult = {
     file_score?: number
@@ -69,7 +104,8 @@ function getFileRelevance(path: string): number {
     if (p.includes('lib/') || p.includes('service') || p.includes('controller')) return 8
     if (p.includes('main') || p.includes('index') || p.includes('app.')) return 8
     if (p.includes('component') || p.includes('page.')) return 6
-    if (p.includes('test') || p.includes('spec') || p.includes('.md')) return 1
+    if (p.includes('test') || p.includes('spec')) return 1
+    if (NON_CODE_EXTS.some((ext) => p.endsWith(ext))) return 1
     return 5
 }
 
@@ -116,9 +152,14 @@ export async function runAnalysisPipeline(
                 if (parts.some((p: string) => SKIP_DIRS.includes(p))) return false
                 if (SKIP_EXTS.some((ext) => item.path!.endsWith(ext))) return false
                 if ((item.size ?? 0) > MAX_FILE_SIZE) return false
+                if (isSecretFile(item.path)) return false
                 return true
             })
             .sort((a, b) => getFileRelevance(b.path!) - getFileRelevance(a.path!))
+
+        if (codeFiles.length === 0) {
+            throw new Error('No source files found to analyze in this repository.')
+        }
 
         const structureText = treeItems
             .filter((i) => i.type === 'tree')
@@ -134,7 +175,7 @@ export async function runAnalysisPipeline(
         )
 
         // ── Stage 3: Fetch file contents (top 6 highest relevance files) ──
-        const filesToAnalyze = codeFiles.slice(0, 6)
+        const filesToAnalyze = codeFiles.slice(0, FILES_TO_ANALYZE)
         const fileContents: { path: string; content: string }[] = []
 
         await Promise.allSettled(
@@ -147,7 +188,7 @@ export async function runAnalysisPipeline(
                     })
                     if ('content' in data && data.content) {
                         const content = Buffer.from(data.content, 'base64').toString('utf-8')
-                        fileContents.push({ path: file.path!, content: content.slice(0, 3000) })
+                        fileContents.push({ path: file.path!, content: content.slice(0, CHARS_PER_FILE) })
                     }
                 } catch {
                     // Skip files that fail fetch
@@ -177,11 +218,11 @@ export async function runAnalysisPipeline(
                 )
             )
             batchResults.forEach((result, j) => {
-                if (result.status === 'fulfilled') {
+                if (result.status === 'fulfilled' && clampScore(result.value.file_score) !== null) {
                     fileReviewsData.push({
                         scanId,
                         filePath: batch[j].path,
-                        fileScore: result.value.file_score ?? 80,
+                        fileScore: clampScore(result.value.file_score) as number,
                         issuesDetected: result.value.issues ?? [],
                         riskLevel: result.value.risk_level ?? 'low',
                     })
@@ -192,13 +233,14 @@ export async function runAnalysisPipeline(
             }
         }
 
-        if (fileReviewsData.length > 0) {
-            await db.insert(fileReviews).values(fileReviewsData)
+        if (fileReviewsData.length === 0) {
+            throw new Error('Could not analyze any source files. The AI service may be busy, so please try again shortly.')
         }
+        await db.insert(fileReviews).values(fileReviewsData)
 
         // ── Stage 5: Security Review ──
         await updateScanProgress(scanId, 'Scanning for security vulnerabilities...')
-        const sampleFiles = fileContents.slice(0, 3)
+        const sampleFiles = fileContents.slice(0, SECURITY_SAMPLE)
         const secResult = await generateStructuredJSON<SecurityResult>(
             SECURITY_PROMPT(sampleFiles)
         )
@@ -215,7 +257,7 @@ export async function runAnalysisPipeline(
         await updateScanProgress(scanId, 'Calculating maintainability index...')
         const fileScoreInputs = fileReviewsData.map((f) => ({
             path: f.filePath,
-            score: f.fileScore ?? 80,
+            score: f.fileScore,
             issues: f.issuesDetected?.length ?? 0,
         }))
 
@@ -225,11 +267,11 @@ export async function runAnalysisPipeline(
 
         // ── Stage 8: Aggregate Scores & Complete ───────────────────
         const scores = {
-            architectureScore: archResult.architecture_score ?? 80,
-            securityScore: secResult.security_score ?? 85,
-            maintainabilityScore: debtResult.maintainability_score ?? 80,
-            scalabilityScore: scaleResult.scalability_score ?? 82,
-            performanceScore: scaleResult.performance_score ?? 84,
+            architectureScore: requireScore(archResult.architecture_score, 'architecture'),
+            securityScore: requireScore(secResult.security_score, 'security'),
+            maintainabilityScore: requireScore(debtResult.maintainability_score, 'maintainability'),
+            scalabilityScore: requireScore(scaleResult.scalability_score, 'scalability'),
+            performanceScore: requireScore(scaleResult.performance_score, 'performance'),
         }
 
         const overallScore = calculateOverallScore(scores)
@@ -245,10 +287,10 @@ export async function runAnalysisPipeline(
                 maintainabilityScore: scores.maintainabilityScore,
                 scalabilityScore: scores.scalabilityScore,
                 performanceScore: scores.performanceScore,
-                technicalDebtIndex: debtResult.technical_debt_index ?? 18,
-                architectureSummary: archResult.summary ?? 'Architecture evaluation completed cleanly.',
-                securitySummary: secResult.summary ?? 'No critical security vulnerabilities detected.',
-                improvementSummary: debtResult.summary ?? 'Repository maintainability index is optimal.',
+                technicalDebtIndex: clampScore(debtResult.technical_debt_index),
+                architectureSummary: archResult.summary ?? null,
+                securitySummary: secResult.summary ?? null,
+                improvementSummary: debtResult.summary ?? null,
             })
             .where(eq(scans.id, scanId))
 
@@ -262,7 +304,7 @@ export async function runAnalysisPipeline(
 
         return { success: true, overallScore }
     } catch (error) {
-        const msg = error instanceof Error ? error.message : String(error)
+        const msg = describeGitHubError(error) ?? (error instanceof Error ? error.message : String(error))
         console.error('[pipeline] Scan failed:', msg, error)
         await db
             .update(scans)
