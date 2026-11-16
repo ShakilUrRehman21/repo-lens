@@ -37,7 +37,7 @@
   body {
     @apply bg-background text-foreground;
     background-color: #F3F6FC;
-    color: #0A2A66;
+    color: #0E3A8A;
   }
   ::-webkit-scrollbar {
     width: 6px;
@@ -169,10 +169,10 @@
 
 /* RETHEME 2026 */
 :root {
-  --background:220 60% 97%; --foreground:220 82% 22%; --card:0 0% 100%; --card-foreground:220 82% 22%;
-  --popover:0 0% 100%; --popover-foreground:220 82% 22%;
-  --primary:46 100% 64%; --primary-foreground:220 82% 22%; --accent:46 100% 64%; --accent-foreground:220 82% 22%;
-  --secondary:220 45% 93%; --secondary-foreground:220 82% 22%; --muted:220 45% 94%; --muted-foreground:220 25% 45%;
+  --background:220 60% 97%; --foreground:220 82% 30%; --card:0 0% 100%; --card-foreground:220 82% 30%;
+  --popover:0 0% 100%; --popover-foreground:220 82% 30%;
+  --primary:46 100% 64%; --primary-foreground:220 82% 30%; --accent:46 100% 64%; --accent-foreground:220 82% 30%;
+  --secondary:220 45% 93%; --secondary-foreground:220 82% 30%; --muted:220 45% 94%; --muted-foreground:220 25% 45%;
   --border:220 40% 85%; --input:220 40% 85%; --ring:220 82% 30%; --radius:.25rem;
 }
 body {
@@ -183,7 +183,7 @@ body {
 }
 code,pre,kbd,.font-mono { font-family:'IBM Plex Mono',ui-monospace,monospace !important; }
 h1,h2,h3 { letter-spacing:-.025em; }
-::selection { background:#FFD447; color:#0A2A66; }
+::selection { background:#FFD447; color:#0E3A8A; }
 
 /* MOTION 2026 */
 @keyframes app-in { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
@@ -202,8 +202,8 @@ html { scroll-behavior:smooth; -webkit-font-smoothing:antialiased; }
 /* DASHBOARD 2026 */
 main .rounded-xl, main .rounded-2xl, main .rounded-3xl, aside .rounded-lg, aside .rounded-xl, aside .rounded-2xl { border-radius:3px !important; }
 main .shadow-sm, main .shadow, main .shadow-md, main .shadow-lg, main .shadow-xl { box-shadow:none !important; }
-main .bg-white.rounded-xl, main .bg-white.rounded-2xl, main .bg-white.rounded-3xl { border:1px solid rgba(10,42,102,.22) !important; }
-main .bg-white.rounded-2xl:hover, main .bg-white.rounded-3xl:hover { border-color:#0A2A66 !important; }
+main .bg-white.rounded-xl, main .bg-white.rounded-2xl, main .bg-white.rounded-3xl { border:1px solid rgba(14,58,138,.22) !important; }
+main .bg-white.rounded-2xl:hover, main .bg-white.rounded-3xl:hover { border-color:#0E3A8A !important; }
 main h1 { letter-spacing:-.035em; }
 main [class*="rounded-["]:not(.rounded-full), aside [class*="rounded-"]:not(.rounded-full) { border-radius:3px !important; }
-main .bg-white[class*="rounded-["] { border:1px solid rgba(10,42,102,.22) !important; box-shadow:none !important; }
+main .bg-white[class*="rounded-["] { border:1px solid rgba(14,58,138,.22) !important; box-shadow:none !important; }

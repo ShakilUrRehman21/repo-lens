@@ -14,7 +14,7 @@ export function Header() {
                     <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
                     <span>Engine Ready</span>
                 </div>
-                <Button variant="ghost" size="sm" className="text-[#4A5A7A] hover:text-[#0A2A66] relative border border-black/[0.08] bg-[#F3F6FC] rounded-xl h-8 w-8 p-0 flex items-center justify-center">
+                <Button variant="ghost" size="sm" className="text-[#4A5A7A] hover:text-[#0E3A8A] relative border border-black/[0.08] bg-[#F3F6FC] rounded-xl h-8 w-8 p-0 flex items-center justify-center">
                     <Bell className="w-3.5 h-3.5" />
                     <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#FFD447] border border-black rounded-full" />
                 </Button>

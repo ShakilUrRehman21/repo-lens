@@ -60,7 +60,7 @@ export default function AdminPage() {
     }
 
     const statCards = [
-        { label: 'Total Users', value: stats?.totalUsers ?? 0, icon: Users, iconBg: 'bg-[#0A2A66]', iconColor: 'text-[#FFD447]' },
+        { label: 'Total Users', value: stats?.totalUsers ?? 0, icon: Users, iconBg: 'bg-[#0E3A8A]', iconColor: 'text-[#FFD447]' },
         { label: 'Total Scans', value: stats?.totalScans ?? 0, icon: BarChart3, iconBg: 'bg-emerald-100', iconColor: 'text-emerald-700' },
         { label: 'Completed', value: stats?.completedScans ?? 0, icon: Activity, iconBg: 'bg-blue-100', iconColor: 'text-blue-700' },
         { label: 'Tokens Used', value: `${((stats?.totalTokensUsed ?? 0) / 1000).toFixed(1)}K`, icon: RefreshCw, iconBg: 'bg-amber-100', iconColor: 'text-amber-700' },
@@ -73,7 +73,7 @@ export default function AdminPage() {
                     <Shield className="w-5 h-5 text-red-600" />
                 </div>
                 <div>
-                    <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0A2A66]">Admin Dashboard</h2>
+                    <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0E3A8A]">Admin Dashboard</h2>
                     <p className="text-[#4A5A7A] text-xs sm:text-sm">Platform-wide statistics and user management</p>
                 </div>
             </div>
@@ -88,7 +88,7 @@ export default function AdminPage() {
                                 <Icon className={`w-4.5 h-4.5 ${s.iconColor}`} />
                             </div>
                             <div>
-                                <p className="text-3xl font-extrabold text-[#0A2A66]">{s.value}</p>
+                                <p className="text-3xl font-extrabold text-[#0E3A8A]">{s.value}</p>
                                 <p className="text-xs text-[#4A5A7A] mt-0.5">{s.label}</p>
                             </div>
                         </div>
@@ -99,7 +99,7 @@ export default function AdminPage() {
             {/* Users table */}
             <Card className="bg-white border-black/[0.06] shadow-xs rounded-[28px]">
                 <CardHeader className="pb-0">
-                    <CardTitle className="text-sm font-bold text-[#0A2A66] flex items-center gap-2">
+                    <CardTitle className="text-sm font-bold text-[#0E3A8A] flex items-center gap-2">
                         <Users className="w-4 h-4 text-[#4A5A7A]" />
                         All Users
                     </CardTitle>
@@ -121,10 +121,10 @@ export default function AdminPage() {
                                 <tbody>
                                     {users.map(user => (
                                         <tr key={user.id} className="border-b border-black/[0.04] last:border-0 hover:bg-[#F3F6FC] transition-colors">
-                                            <td className="py-3 px-3 text-[#0A2A66] font-medium text-sm">{user.email}</td>
+                                            <td className="py-3 px-3 text-[#0E3A8A] font-medium text-sm">{user.email}</td>
                                             <td className="py-3 px-3">
                                                 <Badge className={user.plan === 'pro'
-                                                    ? 'bg-[#FFD447]/20 text-[#0A2A66] border-[#FFD447]/40 font-bold'
+                                                    ? 'bg-[#FFD447]/20 text-[#0E3A8A] border-[#FFD447]/40 font-bold'
                                                     : 'bg-[#EAF0FA] text-[#4A5A7A] border-black/10 font-medium'
                                                 }>
                                                     {user.plan}

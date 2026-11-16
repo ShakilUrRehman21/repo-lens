@@ -101,7 +101,7 @@ function CodeViewer({
     const isApproved = analysis.status === 'approved' || analysis.annotations.length === 0
 
     return (
-        <div className="flex flex-col h-full bg-[#0A2A66] rounded-[20px] overflow-hidden">
+        <div className="flex flex-col h-full bg-[#0E3A8A] rounded-[20px] overflow-hidden">
             {/* File header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-[#0d0e14]">
                 <div className="flex items-center gap-2">
@@ -297,10 +297,10 @@ export default function ArchitecturePage() {
     return (
         <div className="space-y-8 max-w-6xl">
             <div>
-                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0A2A66]">Architecture View</h2>
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0E3A8A]">Architecture View</h2>
                 <p className="text-[#4A5A7A] text-xs sm:text-sm mt-1">
                     {scan?.repository?.fullName
-                        ? <>Analysis of <span className="font-mono font-semibold text-[#0A2A66]">{scan.repository.fullName}</span></>
+                        ? <>Analysis of <span className="font-mono font-semibold text-[#0E3A8A]">{scan.repository.fullName}</span></>
                         : 'Visual breakdown of your codebase structure and file coupling'}
                 </p>
             </div>
@@ -310,7 +310,7 @@ export default function ArchitecturePage() {
                     <div className="w-16 h-16 rounded-2xl bg-[#EAF0FA] flex items-center justify-center mx-auto mb-4">
                         <Boxes className="w-8 h-8 text-[#7B8DB0]" />
                     </div>
-                    <p className="text-[#0A2A66] font-bold text-lg">No architecture data yet</p>
+                    <p className="text-[#0E3A8A] font-bold text-lg">No architecture data yet</p>
                     <p className="text-[#4A5A7A] text-sm mt-1">Run a scan first to see your architecture analysis.</p>
                 </div>
             ) : (
@@ -320,20 +320,20 @@ export default function ArchitecturePage() {
                         <div className="bg-white rounded-[28px] p-6 border border-black/[0.06] shadow-xs space-y-1">
                             <p className="text-xs font-semibold text-[#4A5A7A] uppercase tracking-wider">Architecture Score</p>
                             <div className="flex items-baseline gap-1.5">
-                                <p className="text-5xl font-extrabold text-[#0A2A66] tracking-tight">
+                                <p className="text-5xl font-extrabold text-[#0E3A8A] tracking-tight">
                                     {Math.round(scan.architectureScore ?? 0)}
                                 </p>
                                 <span className="text-sm text-[#7B8DB0]">/ 100</span>
                             </div>
                             <div className="pt-1">
-                                <span className="inline-block px-3 py-1 rounded-full bg-[#FFD447] text-[#0A2A66] text-[11px] font-bold">
+                                <span className="inline-block px-3 py-1 rounded-full bg-[#FFD447] text-[#0E3A8A] text-[11px] font-bold">
                                     {(scan.architectureScore ?? 0) >= 80 ? 'Healthy' : (scan.architectureScore ?? 0) >= 60 ? 'Moderate' : 'Needs Work'}
                                 </span>
                             </div>
                         </div>
                         <div className="bg-white rounded-[28px] p-6 border border-black/[0.06] shadow-xs md:col-span-2">
                             <p className="text-xs font-semibold text-[#4A5A7A] mb-2 uppercase tracking-wider">Architecture Assessment</p>
-                            <p className="text-sm text-[#0A2A66] leading-relaxed">
+                            <p className="text-sm text-[#0E3A8A] leading-relaxed">
                                 {scan.architectureSummary ?? 'No architecture summary available.'}
                             </p>
                         </div>
@@ -344,7 +344,7 @@ export default function ArchitecturePage() {
                         {/* File tree */}
                         <Card className="bg-white border-black/[0.06] shadow-xs rounded-[28px]">
                             <CardHeader className="pb-0">
-                                <CardTitle className="text-sm font-bold text-[#0A2A66] flex items-center gap-2">
+                                <CardTitle className="text-sm font-bold text-[#0E3A8A] flex items-center gap-2">
                                     <GitBranch className="w-4 h-4 text-[#4A5A7A]" />
                                     File Structure
                                     {scan.repository?.fullName && (
@@ -377,7 +377,7 @@ export default function ArchitecturePage() {
                                                                 : 'hover:bg-[#F3F6FC] border border-transparent'
                                                                 }`}
                                                         >
-                                                            <span className="text-xs text-[#0A2A66] font-mono truncate flex-1">{file}</span>
+                                                            <span className="text-xs text-[#0E3A8A] font-mono truncate flex-1">{file}</span>
                                                             <div className="flex items-center gap-2 ml-2 flex-shrink-0">
                                                                 {review && (
                                                                     <span className="text-xs text-[#4A5A7A]">{Math.round(review.fileScore ?? 0)}</span>
@@ -387,7 +387,7 @@ export default function ArchitecturePage() {
                                                                         risk === 'medium' ? 'bg-amber-500' : 'bg-emerald-500'
                                                                     }`} />
                                                                 {isSelected && fileAnalysis && (
-                                                                    <ChevronRight className="w-3 h-3 text-[#0A2A66]" />
+                                                                    <ChevronRight className="w-3 h-3 text-[#0E3A8A]" />
                                                                 )}
                                                             </div>
                                                         </button>
@@ -404,10 +404,10 @@ export default function ArchitecturePage() {
                         <div className="rounded-[28px] overflow-hidden border border-black/[0.06] shadow-xs" style={{ maxHeight: '560px' }}>
                             {analyzing ? (
                                 <div className="flex flex-col items-center justify-center h-64 gap-3 bg-white">
-                                    <div className="w-12 h-12 rounded-2xl bg-[#0A2A66] flex items-center justify-center">
+                                    <div className="w-12 h-12 rounded-2xl bg-[#0E3A8A] flex items-center justify-center">
                                         <Loader2 className="w-6 h-6 text-[#FFD447] animate-spin" />
                                     </div>
-                                    <p className="text-[#0A2A66] font-bold text-sm">Running AI analysis...</p>
+                                    <p className="text-[#0E3A8A] font-bold text-sm">Running AI analysis...</p>
                                     <p className="text-[#4A5A7A] text-xs">Fetching file & inspecting each line</p>
                                 </div>
                             ) : analyzeError ? (
@@ -415,8 +415,8 @@ export default function ArchitecturePage() {
                                     <div className="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center">
                                         <AlertTriangle className="w-6 h-6 text-red-600" />
                                     </div>
-                                    <p className="text-[#0A2A66] font-bold text-sm">{analyzeError}</p>
-                                    <Button size="sm" variant="ghost" className="text-[#0A2A66] border border-black/10 rounded-xl" onClick={() => selectedFile && analyzeFile(selectedFile)}>
+                                    <p className="text-[#0E3A8A] font-bold text-sm">{analyzeError}</p>
+                                    <Button size="sm" variant="ghost" className="text-[#0E3A8A] border border-black/10 rounded-xl" onClick={() => selectedFile && analyzeFile(selectedFile)}>
                                         Retry
                                     </Button>
                                 </div>
@@ -432,7 +432,7 @@ export default function ArchitecturePage() {
                                     <div className="w-12 h-12 rounded-2xl bg-[#EAF0FA] flex items-center justify-center mx-auto mb-3">
                                         <GitBranch className="w-6 h-6 text-[#7B8DB0]" />
                                     </div>
-                                    <p className="text-[#0A2A66] font-bold text-sm">Select a file to analyze</p>
+                                    <p className="text-[#0E3A8A] font-bold text-sm">Select a file to analyze</p>
                                     <p className="text-[#4A5A7A] text-xs mt-1 max-w-xs">Click any file to run AI line-by-line analysis with severity and fix suggestions</p>
                                 </div>
                             )}

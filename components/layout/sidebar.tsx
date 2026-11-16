@@ -57,17 +57,17 @@ export function Sidebar() {
                             className={cn(
                                 'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-150 group',
                                 isActive
-                                    ? 'bg-[#0A2A66] text-white shadow-sm'
-                                    : 'text-[#4A5A7A] hover:text-[#0A2A66] hover:bg-black/[0.04]'
+                                    ? 'bg-[#0E3A8A] text-white shadow-sm'
+                                    : 'text-[#4A5A7A] hover:text-[#0E3A8A] hover:bg-black/[0.04]'
                             )}
                         >
-                            <Icon className={cn('w-4 h-4 flex-shrink-0', isActive ? 'text-[#FFD447]' : 'text-[#7B8DB0] group-hover:text-[#0A2A66]')} />
+                            <Icon className={cn('w-4 h-4 flex-shrink-0', isActive ? 'text-[#FFD447]' : 'text-[#7B8DB0] group-hover:text-[#0E3A8A]')} />
                             <span className="flex-1">{item.label}</span>
                             {item.badge && (
                                 <span className={cn(
                                     'px-1.5 py-0.5 text-[9px] font-bold rounded-md',
                                     isActive
-                                        ? 'bg-[#FFD447] text-[#0A2A66]'
+                                        ? 'bg-[#FFD447] text-[#0E3A8A]'
                                         : 'bg-black/[0.06] text-[#4A5A7A] border border-black/[0.08]'
                                 )}>
                                     {item.badge}
@@ -82,7 +82,7 @@ export function Sidebar() {
             <div className="px-4 py-4 border-t border-black/[0.06] space-y-2">
                 <Link
                     href="/"
-                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-[#4A5A7A] hover:text-[#0A2A66] hover:bg-black/[0.04] transition-colors"
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-[#4A5A7A] hover:text-[#0E3A8A] hover:bg-black/[0.04] transition-colors"
                 >
                     <Home className="w-3.5 h-3.5 text-[#7B8DB0]" />
                     <span>Public Home</span>
@@ -97,7 +97,7 @@ export function Sidebar() {
                         }}
                     />
                     <div className="flex-1 min-w-0">
-                        <p className="text-xs font-bold text-[#0A2A66] truncate">My Account</p>
+                        <p className="text-xs font-bold text-[#0E3A8A] truncate">My Account</p>
                         <p className="text-[10px] text-[#7B8DB0]">Signed in</p>
                     </div>
                 </div>

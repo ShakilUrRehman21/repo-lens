@@ -68,17 +68,17 @@ export default function PRReviewsPage() {
     return (
         <div className="space-y-8 max-w-6xl">
             <div>
-                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0A2A66]">PR Reviews</h2>
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0E3A8A]">PR Reviews</h2>
                 <p className="text-[#4A5A7A] text-xs sm:text-sm mt-1">AI-powered pull request analysis and risk assessment</p>
             </div>
 
             {/* Analyzer form */}
             <div className="bg-white rounded-[28px] p-6 sm:p-7 border border-black/[0.06] shadow-xs">
                 <div className="flex items-center gap-2 mb-5">
-                    <div className="w-8 h-8 rounded-xl bg-[#0A2A66] flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-xl bg-[#0E3A8A] flex items-center justify-center">
                         <GitPullRequest className="w-4 h-4 text-[#FFD447]" />
                     </div>
-                    <h3 className="text-sm font-bold text-[#0A2A66]">Analyze a Pull Request</h3>
+                    <h3 className="text-sm font-bold text-[#0E3A8A]">Analyze a Pull Request</h3>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-3">
                     <div>
@@ -86,7 +86,7 @@ export default function PRReviewsPage() {
                         <select
                             value={selectedRepo}
                             onChange={e => setSelectedRepo(e.target.value)}
-                            className="w-full h-11 px-3 rounded-xl bg-[#F3F6FC] border border-black/10 text-[#0A2A66] text-sm focus:outline-none focus:border-black transition-colors"
+                            className="w-full h-11 px-3 rounded-xl bg-[#F3F6FC] border border-black/10 text-[#0E3A8A] text-sm focus:outline-none focus:border-black transition-colors"
                         >
                             <option value="">Select repository...</option>
                             {repos.map(r => (
@@ -101,7 +101,7 @@ export default function PRReviewsPage() {
                             placeholder="e.g. 42"
                             value={prNumber}
                             onChange={e => setPrNumber(e.target.value)}
-                            className="bg-[#F3F6FC] border-black/10 text-[#0A2A66] placeholder:text-[#7B8DB0] focus:border-black rounded-xl h-11"
+                            className="bg-[#F3F6FC] border-black/10 text-[#0E3A8A] placeholder:text-[#7B8DB0] focus:border-black rounded-xl h-11"
                         />
                     </div>
                 </div>
@@ -112,7 +112,7 @@ export default function PRReviewsPage() {
                     </div>
                 )}
                 <Button
-                    className="mt-4 bg-[#FFD447] hover:bg-[#cbf02e] text-[#0A2A66] font-bold rounded-xl h-11 px-6 shadow-xs transition-all"
+                    className="mt-4 bg-[#FFD447] hover:bg-[#cbf02e] text-[#0E3A8A] font-bold rounded-xl h-11 px-6 shadow-xs transition-all"
                     onClick={handleAnalyze}
                     disabled={analyzing || !selectedRepo || !prNumber}
                 >
@@ -135,7 +135,7 @@ export default function PRReviewsPage() {
                             <div className="w-12 h-12 rounded-2xl bg-[#EAF0FA] flex items-center justify-center mx-auto mb-3">
                                 <GitPullRequest className="w-6 h-6 text-[#7B8DB0]" />
                             </div>
-                            <p className="text-[#0A2A66] font-bold text-sm">No PR reviews yet</p>
+                            <p className="text-[#0E3A8A] font-bold text-sm">No PR reviews yet</p>
                             <p className="text-[#4A5A7A] text-xs mt-1">Analyze a pull request to get started</p>
                         </div>
                     ) : (
@@ -147,7 +147,7 @@ export default function PRReviewsPage() {
                             >
                                 <div className="flex items-start justify-between mb-2">
                                     <div>
-                                        <p className="text-sm font-bold text-[#0A2A66]">PR #{review.prNumber}</p>
+                                        <p className="text-sm font-bold text-[#0E3A8A]">PR #{review.prNumber}</p>
                                         <p className="text-xs text-[#4A5A7A] mt-0.5 truncate max-w-[180px]">{review.prTitle ?? 'Untitled'}</p>
                                     </div>
                                     <span className={`text-2xl font-extrabold ${getRiskColor(review.riskScore ?? 0)}`}>
@@ -176,7 +176,7 @@ export default function PRReviewsPage() {
                     {selected ? (
                         <Card className="bg-white border-black/[0.06] shadow-xs rounded-[28px]">
                             <CardHeader className="pb-0">
-                                <CardTitle className="text-sm font-bold text-[#0A2A66]">
+                                <CardTitle className="text-sm font-bold text-[#0E3A8A]">
                                     PR #{selected.prNumber} Analysis
                                 </CardTitle>
                             </CardHeader>
@@ -201,7 +201,7 @@ export default function PRReviewsPage() {
                                 {selected.reviewSummary && (
                                     <div className="bg-[#F3F6FC] rounded-2xl p-4 border border-black/[0.06]">
                                         <p className="text-xs font-semibold text-[#4A5A7A] mb-2">AI Summary</p>
-                                        <p className="text-sm text-[#0A2A66] leading-relaxed">{selected.reviewSummary}</p>
+                                        <p className="text-sm text-[#0E3A8A] leading-relaxed">{selected.reviewSummary}</p>
                                     </div>
                                 )}
 
@@ -220,7 +220,7 @@ export default function PRReviewsPage() {
                                                     </Badge>
                                                     <span className="text-xs text-[#4A5A7A] font-mono truncate">{issue.file}</span>
                                                 </div>
-                                                <p className="text-sm text-[#0A2A66]">{issue.problem}</p>
+                                                <p className="text-sm text-[#0E3A8A]">{issue.problem}</p>
                                                 <p className="text-xs text-[#4A5A7A] mt-1 font-medium">→ {issue.suggestion}</p>
                                             </div>
                                         ))}
@@ -233,7 +233,7 @@ export default function PRReviewsPage() {
                             <div className="w-12 h-12 rounded-2xl bg-[#EAF0FA] flex items-center justify-center mx-auto mb-3">
                                 <GitPullRequest className="w-6 h-6 text-[#7B8DB0]" />
                             </div>
-                            <p className="text-[#0A2A66] font-bold text-sm">Select a review</p>
+                            <p className="text-[#0E3A8A] font-bold text-sm">Select a review</p>
                             <p className="text-[#4A5A7A] text-xs mt-1">Click a PR review to see the full analysis</p>
                         </div>
                     )}

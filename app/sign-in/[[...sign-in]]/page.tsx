@@ -5,7 +5,7 @@ export default function SignInPage() {
     return (
         <div className="min-h-screen bg-[#F3F6FC] flex">
             {/* Left Branding Panel */}
-            <div className="hidden lg:flex lg:w-[480px] xl:w-[520px] flex-shrink-0 bg-[#0A2A66] flex-col justify-between p-12 relative overflow-hidden">
+            <div className="hidden lg:flex lg:w-[480px] xl:w-[520px] flex-shrink-0 bg-[#0E3A8A] flex-col justify-between p-12 relative overflow-hidden">
                 {/* Decorative background accent */}
                 <div className="absolute top-0 right-0 w-72 h-72 bg-[#FFD447]/[0.06] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
                 <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#FFD447]/[0.04] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
