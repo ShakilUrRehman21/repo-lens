@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google'
 import './landing.css'
+import { Reveal, Stagger, StaggerItem, Parallax, ScrollProgress } from '../components/motion/Motion'
 
 const sans = IBM_Plex_Sans({ subsets: ['latin'], weight: ['400', '600'], variable: '--rl-sans' })
 const mono = IBM_Plex_Mono({ subsets: ['latin'], weight: ['400', '600'], variable: '--rl-mono' })
@@ -16,6 +17,7 @@ const features = [
 export default function LandingPage() {
   return (
     <div className={`rl ${sans.variable} ${mono.variable}`}>
+      <ScrollProgress color="#ffd447" />
       <div className="rl-bp" aria-hidden />
       <header className="rl-wrap rl-nav">
         <Link href="/" className="rl-brand">REPOLENS</Link>
@@ -38,6 +40,7 @@ export default function LandingPage() {
             <p className="rl-note rl-rise rl-d3">// public or private GitHub repos</p>
           </div>
 
+          <Parallax offset={30}>
           <svg className="rl-plan rl-rise rl-d2" viewBox="0 0 460 360" fill="none" stroke="currentColor" strokeWidth="1.5" aria-label="Repository drawn as an architecture plan">
             <g className="rl-txt">
               <rect x="170" y="20" width="120" height="44" /><text x="200" y="47">app/</text>
@@ -54,27 +57,28 @@ export default function LandingPage() {
             <text x="300" y="138" className="rl-warn-t rl-sm">token stored in localStorage</text>
             <text x="252" y="344" className="rl-sm rl-dim">debt approx. 6h &middot; unused module</text>
           </svg>
+          </Parallax>
         </section>
 
         <section id="features" className="rl-wrap rl-feat">
-          <div className="rl-head">
+          <Reveal className="rl-head">
             <span>SHEET A-02 TO A-06</span>
             <h2>What gets inspected</h2>
-          </div>
-          <div className="rl-grid">
+          </Reveal>
+          <Stagger className="rl-grid" gap={0.08}>
             {features.map(([id, t, d]) => (
-              <div key={id} className="rl-card">
+              <StaggerItem key={id} className="rl-cell"><div className="rl-card">
                 <span className="rl-id">{id}</span>
                 <h3>{t}</h3>
                 <p>{d}</p>
-              </div>
+              </div></StaggerItem>
             ))}
-            <Link href="/sign-up" className="rl-card rl-card-cta">
+            <StaggerItem className="rl-cell"><Link href="/sign-up" className="rl-card rl-card-cta">
               <span className="rl-id">NEXT</span>
               <h3>Run your first scan &rarr;</h3>
               <p>Takes a repo URL. Nothing to install.</p>
-            </Link>
-          </div>
+            </Link></StaggerItem>
+          </Stagger>
         </section>
       </main>
 

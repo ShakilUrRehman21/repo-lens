@@ -46,3 +46,4 @@
 @media (max-width:900px){.rl-hero{grid-template-columns:1fr}.rl-grid{grid-template-columns:1fr 1fr}.rl-nav nav a:not(.rl-btn){display:none}}
 @media (max-width:560px){.rl-grid{grid-template-columns:1fr}.rl-wrap{padding:0 20px}}
 @media (prefers-reduced-motion:reduce){.rl-rise,.rl-draw,.rl-dot{animation:none;stroke-dashoffset:0}}
+.rl-cell{display:flex}.rl-cell>.rl-card{flex:1}

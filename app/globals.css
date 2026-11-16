@@ -184,3 +184,17 @@ body {
 code,pre,kbd,.font-mono { font-family:'IBM Plex Mono',ui-monospace,monospace !important; }
 h1,h2,h3 { letter-spacing:-.025em; }
 ::selection { background:#FFD447; color:#0A2A66; }
+
+/* MOTION 2026 */
+@keyframes app-in { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+main > *:not(section):not(header):not(footer):not(nav) { animation:app-in .6s cubic-bezier(.22,1,.36,1) both; }
+main > *:nth-child(2) { animation-delay:.06s; } main > *:nth-child(3) { animation-delay:.12s; }
+main > *:nth-child(4) { animation-delay:.18s; } main > *:nth-child(5) { animation-delay:.24s; }
+main .grid > * { animation:app-in .55s cubic-bezier(.22,1,.36,1) both; }
+main .grid > *:nth-child(2) { animation-delay:.05s; } main .grid > *:nth-child(3) { animation-delay:.1s; }
+main .grid > *:nth-child(4) { animation-delay:.15s; } main .grid > *:nth-child(5) { animation-delay:.2s; }
+main .grid > *:nth-child(6) { animation-delay:.25s; } main .grid > *:nth-child(n+7) { animation-delay:.3s; }
+a, button { transition:color .2s, background-color .2s, border-color .2s, box-shadow .2s, transform .2s, opacity .2s; }
+button:not(:disabled):active { transform:scale(.97); }
+html { scroll-behavior:smooth; -webkit-font-smoothing:antialiased; }
+@media (prefers-reduced-motion:reduce) { main > *, main .grid > * { animation:none !important; } html { scroll-behavior:auto; } }

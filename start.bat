@@ -1,7 +1,7 @@
 @echo off
 title RepoLens - localhost:3004
 cd /d "%~dp0"
-if not exist node_modules (
+if not exist node_modules\framer-motion (
   echo Installing dependencies...
   call npm install
 )
