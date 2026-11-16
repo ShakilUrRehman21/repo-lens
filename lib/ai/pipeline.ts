@@ -8,6 +8,7 @@ import {
     DEBT_PROMPT,
 } from './prompts'
 import { calculateOverallScore } from './scoring'
+import { codeExcerpt } from './excerpt'
 import { db } from '@/db'
 import { scans, fileReviews, repositories } from '@/db/schema'
 import { eq } from 'drizzle-orm'
@@ -188,7 +189,7 @@ export async function runAnalysisPipeline(
                     })
                     if ('content' in data && data.content) {
                         const content = Buffer.from(data.content, 'base64').toString('utf-8')
-                        fileContents.push({ path: file.path!, content: content.slice(0, CHARS_PER_FILE) })
+                        fileContents.push({ path: file.path!, content: content.slice(0, 200_000) })
                     }
                 } catch {
                     // Skip files that fail fetch
@@ -213,7 +214,7 @@ export async function runAnalysisPipeline(
             const batchResults = await Promise.allSettled(
                 batch.map((f) =>
                     generateStructuredJSON<FileAnalysisResult>(
-                        FILE_ANALYSIS_PROMPT(f.path, f.content)
+                        FILE_ANALYSIS_PROMPT(f.path, codeExcerpt(f.content, CHARS_PER_FILE, true))
                     )
                 )
             )
@@ -242,7 +243,7 @@ export async function runAnalysisPipeline(
         await updateScanProgress(scanId, 'Scanning for security vulnerabilities...')
         const sampleFiles = fileContents.slice(0, SECURITY_SAMPLE)
         const secResult = await generateStructuredJSON<SecurityResult>(
-            SECURITY_PROMPT(sampleFiles)
+            SECURITY_PROMPT(sampleFiles.map((f) => ({ path: f.path, content: codeExcerpt(f.content, 4000) })))
         )
 
         await new Promise(r => setTimeout(r, 200))
@@ -250,7 +251,7 @@ export async function runAnalysisPipeline(
         // ── Stage 6: Scalability Review ──
         await updateScanProgress(scanId, 'Evaluating scalability & performance...')
         const scaleResult = await generateStructuredJSON<ScalabilityResult>(
-            SCALABILITY_PROMPT(sampleFiles)
+            SCALABILITY_PROMPT(sampleFiles.map((f) => ({ path: f.path, content: codeExcerpt(f.content, 4000) })))
         )
 
         // ── Stage 7: Technical Debt Index ──

@@ -3,9 +3,12 @@ You are an expert code reviewer. Analyze the following code file and return ONLY
 
 File: ${filePath}
 
+Each line starts with its line number followed by a colon (for example "12: const x = 1").
+If the excerpt is cut short, do not treat the cut as a syntax error.
+
 Code:
 \`\`\`
-${content.slice(0, 2200)}
+${content}
 \`\`\`
 
 Return this exact JSON structure:
@@ -18,14 +21,15 @@ Return this exact JSON structure:
       "problem": "<description of the issue>",
       "severity": "<low|medium|high|critical>",
       "suggestion": "<specific improvement recommendation>",
-      "line": <optional line number>
+      "line": <exact line number from the listing where the issue is>
     }
   ]
 }
 
 Rules:
 - file_score: 100 = perfect, 0 = totally broken
-- Maximum 4 issues per file
+- Maximum 6 issues per file
+- Every issue must include the line number it refers to
 - Never return unstructured text, only the JSON object
 `
 
@@ -138,9 +142,13 @@ export const LINE_ANALYSIS_PROMPT = (filePath: string, content: string) => `
 You are an expert static analysis engine. Perform line-by-line code review on this file:
 File: ${filePath}
 
+Each line starts with its line number followed by a colon (for example "12: const x = 1").
+Use exactly those numbers in "line". Only report real problems in the code shown.
+If the excerpt is cut short, do not treat the cut as a syntax error.
+
 Code:
 \`\`\`
-${content.slice(0, 2500)}
+${content}
 \`\`\`
 
 Return this exact JSON structure:

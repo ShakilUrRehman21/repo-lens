@@ -35,7 +35,7 @@ export async function generateStructuredJSON<T>(initialPrompt: string, retries =
                     ],
                     response_format: { type: 'json_object' },
                     temperature: 0.1,
-                    max_tokens: 1536,
+                    max_tokens: 3000,
                 })
 
                 const text = response.choices[0]?.message?.content?.trim() ?? '{}'
