@@ -20,7 +20,7 @@ export function RepoLensMark({ size = 34, className = '' }: { size?: number; cla
             className={`flex-shrink-0 transition-transform duration-300 group-hover:scale-105 ${className}`}
         >
             {/* Base Squircle */}
-            <rect width="40" height="40" rx="11" fill="#0D0E12" />
+            <rect width="40" height="40" rx="11" fill="#0A2A66" />
             <rect
                 x="0.75"
                 y="0.75"
@@ -43,20 +43,20 @@ export function RepoLensMark({ size = 34, className = '' }: { size?: number; cla
             />
 
             {/* Precision Scope Reticle Crosshairs */}
-            <line x1="20" y1="5" x2="20" y2="8" stroke="#D4F63C" strokeWidth="1.5" strokeLinecap="round" />
+            <line x1="20" y1="5" x2="20" y2="8" stroke="#FFD447" strokeWidth="1.5" strokeLinecap="round" />
             <line x1="20" y1="32" x2="20" y2="35" stroke="#464C5A" strokeWidth="1.5" strokeLinecap="round" />
             <line x1="5" y1="20" x2="8" y2="20" stroke="#464C5A" strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="32" y1="20" x2="35" y2="20" stroke="#D4F63C" strokeWidth="1.5" strokeLinecap="round" />
+            <line x1="32" y1="20" x2="35" y2="20" stroke="#FFD447" strokeWidth="1.5" strokeLinecap="round" />
 
             {/* Optical Aperture Blades / Iris Geometry */}
             <path
                 d="M13 14.5L24 11L21 21L13 14.5Z"
-                fill="#D4F63C"
+                fill="#FFD447"
                 fillOpacity="0.15"
             />
             <path
                 d="M27 25.5L16 29L19 19L27 25.5Z"
-                fill="#D4F63C"
+                fill="#FFD447"
                 fillOpacity="0.15"
             />
 
@@ -65,19 +65,19 @@ export function RepoLensMark({ size = 34, className = '' }: { size?: number; cla
                 cx="20"
                 cy="20"
                 r="7.5"
-                stroke="#D4F63C"
+                stroke="#FFD447"
                 strokeWidth="2"
             />
 
             {/* Git Branch / Code Diagnostic Core */}
-            <circle cx="20" cy="20" r="3" fill="#D4F63C" />
-            <circle cx="20" cy="20" r="1.2" fill="#0D0E12" />
+            <circle cx="20" cy="20" r="3" fill="#FFD447" />
+            <circle cx="20" cy="20" r="1.2" fill="#0A2A66" />
 
             {/* Laser Focal Pulse (Top-Right Angle) */}
-            <circle cx="28" cy="12" r="1.5" fill="#D4F63C" />
+            <circle cx="28" cy="12" r="1.5" fill="#FFD447" />
             <path
                 d="M25.5 14.5L23.5 16.5"
-                stroke="#D4F63C"
+                stroke="#FFD447"
                 strokeWidth="1.2"
                 strokeLinecap="round"
             />
@@ -104,8 +104,8 @@ export function Logo({
         variant === 'light'
             ? 'text-white'
             : variant === 'dark'
-            ? 'text-[#0D0E12]'
-            : 'text-[#0D0E12] dark:text-white'
+            ? 'text-[#0A2A66]'
+            : 'text-[#0A2A66] dark:text-white'
 
     const subColor =
         variant === 'light'
@@ -120,7 +120,7 @@ export function Logo({
                     <span className={`font-black tracking-tight ${s.text} ${textColor}`}>
                         Repo<span className="text-[#849924]">Lens</span>
                     </span>
-                    <span className="px-1.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-[#0D0E12] text-[#D4F63C] border border-black/10">
+                    <span className="px-1.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-[#0A2A66] text-[#FFD447] border border-black/10">
                         AI
                     </span>
                 </div>

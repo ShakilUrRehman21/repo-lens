@@ -71,8 +71,8 @@ export default function ExportPage() {
             icon: FileText,
             label: 'Markdown Report',
             desc: 'Full analysis as .md file',
-            iconColor: 'text-[#0D0E12]',
-            bg: 'bg-[#F6F7F3]',
+            iconColor: 'text-[#0A2A66]',
+            bg: 'bg-[#EAF0FA]',
             border: 'border-black/[0.06]'
         },
         {
@@ -96,8 +96,8 @@ export default function ExportPage() {
     return (
         <div className="space-y-8 max-w-6xl">
             <div>
-                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0D0E12]">Export Reports</h2>
-                <p className="text-[#555962] text-xs sm:text-sm mt-1">Download or share your analysis reports</p>
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0A2A66]">Export Reports</h2>
+                <p className="text-[#4A5A7A] text-xs sm:text-sm mt-1">Download or share your analysis reports</p>
             </div>
 
             {/* Export format info cards */}
@@ -110,8 +110,8 @@ export default function ExportPage() {
                                 <Icon className={`w-5 h-5 ${f.iconColor}`} />
                             </div>
                             <div>
-                                <p className="text-sm font-bold text-[#0D0E12]">{f.label}</p>
-                                <p className="text-xs text-[#555962] mt-0.5">{f.desc}</p>
+                                <p className="text-sm font-bold text-[#0A2A66]">{f.label}</p>
+                                <p className="text-xs text-[#4A5A7A] mt-0.5">{f.desc}</p>
                             </div>
                         </div>
                     )
@@ -121,7 +121,7 @@ export default function ExportPage() {
             {/* Scans list */}
             <Card className="bg-white border-black/[0.06] shadow-xs rounded-[28px]">
                 <CardHeader className="pb-0">
-                    <CardTitle className="text-sm font-bold text-[#0D0E12]">Completed Scans</CardTitle>
+                    <CardTitle className="text-sm font-bold text-[#0A2A66]">Completed Scans</CardTitle>
                 </CardHeader>
                 <CardContent className="pt-4">
                     {loading ? (
@@ -130,26 +130,26 @@ export default function ExportPage() {
                         </div>
                     ) : scans.length === 0 ? (
                         <div className="text-center py-12">
-                            <div className="w-12 h-12 rounded-2xl bg-[#F6F7F3] flex items-center justify-center mx-auto mb-3">
-                                <AlertCircle className="w-6 h-6 text-[#8B907E]" />
+                            <div className="w-12 h-12 rounded-2xl bg-[#EAF0FA] flex items-center justify-center mx-auto mb-3">
+                                <AlertCircle className="w-6 h-6 text-[#7B8DB0]" />
                             </div>
-                            <p className="text-[#0D0E12] font-bold text-sm">No completed scans to export</p>
-                            <p className="text-[#555962] text-xs mt-1">Run a repository scan first to generate reports</p>
+                            <p className="text-[#0A2A66] font-bold text-sm">No completed scans to export</p>
+                            <p className="text-[#4A5A7A] text-xs mt-1">Run a repository scan first to generate reports</p>
                         </div>
                     ) : (
                         <div className="space-y-2">
                             {scans.map(scan => (
-                                <div key={scan.id} className="flex items-center justify-between p-4 bg-[#FAFAF8] rounded-2xl border border-black/[0.04] hover:bg-[#F6F7F3] transition-colors">
+                                <div key={scan.id} className="flex items-center justify-between p-4 bg-[#F3F6FC] rounded-2xl border border-black/[0.04] hover:bg-[#EAF0FA] transition-colors">
                                     <div>
                                         <div className="flex items-center gap-2">
-                                            <p className="text-sm font-bold text-[#0D0E12]">Scan #{scan.id}</p>
+                                            <p className="text-sm font-bold text-[#0A2A66]">Scan #{scan.id}</p>
                                             {scan.overallScore != null && (
                                                 <Badge className={getScoreBgColor(scan.overallScore)}>
                                                     {Math.round(scan.overallScore)}
                                                 </Badge>
                                             )}
                                         </div>
-                                        <p className="text-xs text-[#555962] mt-0.5">
+                                        <p className="text-xs text-[#4A5A7A] mt-0.5">
                                             {format(new Date(scan.createdAt), 'MMM d, yyyy · HH:mm')}
                                         </p>
                                         {shareLinks[scan.id] && (
@@ -162,7 +162,7 @@ export default function ExportPage() {
                                         <Button
                                             size="sm"
                                             variant="ghost"
-                                            className="text-[#555962] hover:text-[#0D0E12] hover:bg-white h-9 px-3 rounded-xl border border-black/[0.06] gap-1.5 text-xs font-semibold"
+                                            className="text-[#4A5A7A] hover:text-[#0A2A66] hover:bg-white h-9 px-3 rounded-xl border border-black/[0.06] gap-1.5 text-xs font-semibold"
                                             disabled={exporting?.id === scan.id && exporting?.type === 'md'}
                                             onClick={() => downloadMarkdown(scan.id)}
                                         >
@@ -173,7 +173,7 @@ export default function ExportPage() {
                                         </Button>
                                         <Button
                                             size="sm"
-                                            className="bg-[#D4F63C] hover:bg-[#cbf02e] text-[#0D0E12] font-bold h-9 px-3 rounded-xl shadow-xs transition-all gap-1.5 text-xs"
+                                            className="bg-[#FFD447] hover:bg-[#cbf02e] text-[#0A2A66] font-bold h-9 px-3 rounded-xl shadow-xs transition-all gap-1.5 text-xs"
                                             disabled={exporting?.id === scan.id && exporting?.type === 'share'}
                                             onClick={() => copyShareLink(scan.id)}
                                         >

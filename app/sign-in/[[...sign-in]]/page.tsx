@@ -3,12 +3,12 @@ import { Logo } from '@/components/ui/logo'
 
 export default function SignInPage() {
     return (
-        <div className="min-h-screen bg-[#FAFAF8] flex">
+        <div className="min-h-screen bg-[#F3F6FC] flex">
             {/* Left Branding Panel */}
-            <div className="hidden lg:flex lg:w-[480px] xl:w-[520px] flex-shrink-0 bg-[#0D0E12] flex-col justify-between p-12 relative overflow-hidden">
+            <div className="hidden lg:flex lg:w-[480px] xl:w-[520px] flex-shrink-0 bg-[#0A2A66] flex-col justify-between p-12 relative overflow-hidden">
                 {/* Decorative background accent */}
-                <div className="absolute top-0 right-0 w-72 h-72 bg-[#D4F63C]/[0.06] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-                <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#D4F63C]/[0.04] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+                <div className="absolute top-0 right-0 w-72 h-72 bg-[#FFD447]/[0.06] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#FFD447]/[0.04] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
                 {/* Logo */}
                 <div className="relative z-10">
@@ -29,7 +29,7 @@ export default function SignInPage() {
                     {/* Feature pills */}
                     <div className="space-y-3">
                         {[
-                            { dot: 'bg-[#D4F63C]', text: '5-Stage AST Analysis Engine' },
+                            { dot: 'bg-[#FFD447]', text: '5-Stage AST Analysis Engine' },
                             { dot: 'bg-purple-400', text: 'Zero-Retention Security Scans' },
                             { dot: 'bg-blue-400', text: 'Automated PR Review Bot' },
                         ].map(({ dot, text }) => (
@@ -46,7 +46,7 @@ export default function SignInPage() {
                         <p className="text-2xl font-black text-white tracking-tight">
                             {'<'}60<span className="text-sm font-normal text-white/40 ml-1">seconds</span>
                         </p>
-                        <p className="text-[11px] text-[#D4F63C] font-mono">Across 500+ files</p>
+                        <p className="text-[11px] text-[#FFD447] font-mono">Across 500+ files</p>
                     </div>
                 </div>
 

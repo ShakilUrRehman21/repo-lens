@@ -30,10 +30,10 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     if (!active || !payload?.length) return null
     return (
         <div className="bg-white border border-black/10 rounded-xl p-3 text-xs shadow-md">
-            <p className="text-[#555962] mb-2 font-medium">{label}</p>
+            <p className="text-[#4A5A7A] mb-2 font-medium">{label}</p>
             {payload.map((p: any) => (
                 <p key={p.name} style={{ color: p.color }} className="flex items-center gap-2 font-semibold">
-                    <span className="text-[#555962] font-normal">{p.name}:</span> {Math.round(p.value)}
+                    <span className="text-[#4A5A7A] font-normal">{p.name}:</span> {Math.round(p.value)}
                 </p>
             ))}
         </div>
@@ -85,26 +85,26 @@ export default function TrendsPage() {
     return (
         <div className="space-y-8 max-w-6xl">
             <div>
-                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0D0E12]">Trends & History</h2>
-                <p className="text-[#555962] text-xs sm:text-sm mt-1">Track your codebase quality improvement over time</p>
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0A2A66]">Trends & History</h2>
+                <p className="text-[#4A5A7A] text-xs sm:text-sm mt-1">Track your codebase quality improvement over time</p>
             </div>
 
             {/* Summary cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="bg-white rounded-2xl p-5 border border-black/[0.06] shadow-xs space-y-1">
-                    <p className="text-xs font-semibold text-[#555962]">Total Scans</p>
-                    <p className="text-3xl font-extrabold text-[#0D0E12]">{history.length}</p>
-                    <p className="text-[11px] text-[#8B907E]">All repositories</p>
+                    <p className="text-xs font-semibold text-[#4A5A7A]">Total Scans</p>
+                    <p className="text-3xl font-extrabold text-[#0A2A66]">{history.length}</p>
+                    <p className="text-[11px] text-[#7B8DB0]">All repositories</p>
                 </div>
                 <div className="bg-white rounded-2xl p-5 border border-black/[0.06] shadow-xs space-y-1">
-                    <p className="text-xs font-semibold text-[#555962]">Latest Score</p>
-                    <p className="text-3xl font-extrabold text-[#0D0E12]">
+                    <p className="text-xs font-semibold text-[#4A5A7A]">Latest Score</p>
+                    <p className="text-3xl font-extrabold text-[#0A2A66]">
                         {latest ? Math.round(latest.overallScore ?? 0) : '—'}
                     </p>
-                    <p className="text-[11px] text-[#8B907E]">Overall health</p>
+                    <p className="text-[11px] text-[#7B8DB0]">Overall health</p>
                 </div>
                 <div className="bg-white rounded-2xl p-5 border border-black/[0.06] shadow-xs space-y-1">
-                    <p className="text-xs font-semibold text-[#555962]">Score Change</p>
+                    <p className="text-xs font-semibold text-[#4A5A7A]">Score Change</p>
                     <div className="flex items-center gap-1.5">
                         {delta !== null ? (
                             <>
@@ -115,34 +115,34 @@ export default function TrendsPage() {
                                     {delta >= 0 ? '+' : ''}{delta}
                                 </p>
                             </>
-                        ) : <p className="text-3xl font-extrabold text-[#8B907E]">—</p>}
+                        ) : <p className="text-3xl font-extrabold text-[#7B8DB0]">—</p>}
                     </div>
-                    <p className="text-[11px] text-[#8B907E]">vs. last scan</p>
+                    <p className="text-[11px] text-[#7B8DB0]">vs. last scan</p>
                 </div>
                 <div className="bg-white rounded-2xl p-5 border border-black/[0.06] shadow-xs space-y-1">
-                    <p className="text-xs font-semibold text-[#555962]">Debt Index</p>
+                    <p className="text-xs font-semibold text-[#4A5A7A]">Debt Index</p>
                     <p className="text-3xl font-extrabold text-amber-500">
                         {latest ? Math.round(latest.technicalDebtIndex ?? 0) : '—'}
                     </p>
-                    <p className="text-[11px] text-[#8B907E]">Technical debt %</p>
+                    <p className="text-[11px] text-[#7B8DB0]">Technical debt %</p>
                 </div>
             </div>
 
             {chartData.length < 2 ? (
                 <div className="bg-white rounded-[28px] p-16 border border-black/[0.06] shadow-xs text-center">
-                    <div className="w-14 h-14 rounded-2xl bg-[#F6F7F3] flex items-center justify-center mx-auto mb-4">
-                        <BarChart3 className="w-7 h-7 text-[#8B907E]" />
+                    <div className="w-14 h-14 rounded-2xl bg-[#EAF0FA] flex items-center justify-center mx-auto mb-4">
+                        <BarChart3 className="w-7 h-7 text-[#7B8DB0]" />
                     </div>
-                    <p className="text-[#0D0E12] font-bold">Not enough data yet</p>
-                    <p className="text-[#555962] text-sm mt-1">Run at least 2 scans to see trend charts.</p>
+                    <p className="text-[#0A2A66] font-bold">Not enough data yet</p>
+                    <p className="text-[#4A5A7A] text-sm mt-1">Run at least 2 scans to see trend charts.</p>
                 </div>
             ) : (
                 <>
                     {/* Overall score trend */}
                     <Card className="bg-white border-black/[0.06] shadow-xs rounded-[28px]">
                         <CardHeader className="pb-0">
-                            <CardTitle className="text-sm font-bold text-[#0D0E12] flex items-center gap-2">
-                                <TrendingUp className="w-4 h-4 text-[#0D0E12]" />
+                            <CardTitle className="text-sm font-bold text-[#0A2A66] flex items-center gap-2">
+                                <TrendingUp className="w-4 h-4 text-[#0A2A66]" />
                                 Overall Score Trend
                             </CardTitle>
                         </CardHeader>
@@ -151,15 +151,15 @@ export default function TrendsPage() {
                                 <AreaChart data={chartData}>
                                     <defs>
                                         <linearGradient id="overallGrad" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#D4F63C" stopOpacity={0.3} />
-                                            <stop offset="95%" stopColor="#D4F63C" stopOpacity={0} />
+                                            <stop offset="5%" stopColor="#FFD447" stopOpacity={0.3} />
+                                            <stop offset="95%" stopColor="#FFD447" stopOpacity={0} />
                                         </linearGradient>
                                     </defs>
                                     <CartesianGrid strokeDasharray="3 3" stroke="#F0F1EC" />
-                                    <XAxis dataKey="date" tick={{ fill: '#8B907E', fontSize: 11 }} axisLine={false} tickLine={false} />
-                                    <YAxis domain={[0, 100]} tick={{ fill: '#8B907E', fontSize: 11 }} axisLine={false} tickLine={false} />
+                                    <XAxis dataKey="date" tick={{ fill: '#7B8DB0', fontSize: 11 }} axisLine={false} tickLine={false} />
+                                    <YAxis domain={[0, 100]} tick={{ fill: '#7B8DB0', fontSize: 11 }} axisLine={false} tickLine={false} />
                                     <Tooltip content={<CustomTooltip />} />
-                                    <Area type="monotone" dataKey="Overall" stroke="#0D0E12" strokeWidth={2} fill="url(#overallGrad)" />
+                                    <Area type="monotone" dataKey="Overall" stroke="#0A2A66" strokeWidth={2} fill="url(#overallGrad)" />
                                 </AreaChart>
                             </ResponsiveContainer>
                         </CardContent>
@@ -168,8 +168,8 @@ export default function TrendsPage() {
                     {/* Category breakdown */}
                     <Card className="bg-white border-black/[0.06] shadow-xs rounded-[28px]">
                         <CardHeader className="pb-0">
-                            <CardTitle className="text-sm font-bold text-[#0D0E12] flex items-center gap-2">
-                                <BarChart3 className="w-4 h-4 text-[#0D0E12]" />
+                            <CardTitle className="text-sm font-bold text-[#0A2A66] flex items-center gap-2">
+                                <BarChart3 className="w-4 h-4 text-[#0A2A66]" />
                                 Score Breakdown Over Time
                             </CardTitle>
                         </CardHeader>
@@ -177,11 +177,11 @@ export default function TrendsPage() {
                             <ResponsiveContainer width="100%" height={240}>
                                 <LineChart data={chartData}>
                                     <CartesianGrid strokeDasharray="3 3" stroke="#F0F1EC" />
-                                    <XAxis dataKey="date" tick={{ fill: '#8B907E', fontSize: 11 }} axisLine={false} tickLine={false} />
-                                    <YAxis domain={[0, 100]} tick={{ fill: '#8B907E', fontSize: 11 }} axisLine={false} tickLine={false} />
+                                    <XAxis dataKey="date" tick={{ fill: '#7B8DB0', fontSize: 11 }} axisLine={false} tickLine={false} />
+                                    <YAxis domain={[0, 100]} tick={{ fill: '#7B8DB0', fontSize: 11 }} axisLine={false} tickLine={false} />
                                     <Tooltip content={<CustomTooltip />} />
-                                    <Legend wrapperStyle={{ fontSize: '12px', color: '#555962' }} />
-                                    <Line type="monotone" dataKey="Architecture" stroke="#0D0E12" strokeWidth={2} dot={false} />
+                                    <Legend wrapperStyle={{ fontSize: '12px', color: '#4A5A7A' }} />
+                                    <Line type="monotone" dataKey="Architecture" stroke="#0A2A66" strokeWidth={2} dot={false} />
                                     <Line type="monotone" dataKey="Security" stroke="#ef4444" strokeWidth={2} dot={false} />
                                     <Line type="monotone" dataKey="Maintainability" stroke="#10b981" strokeWidth={2} dot={false} />
                                 </LineChart>
@@ -192,7 +192,7 @@ export default function TrendsPage() {
                     {/* Debt trend */}
                     <Card className="bg-white border-black/[0.06] shadow-xs rounded-[28px]">
                         <CardHeader className="pb-0">
-                            <CardTitle className="text-sm font-bold text-[#0D0E12] flex items-center gap-2">
+                            <CardTitle className="text-sm font-bold text-[#0A2A66] flex items-center gap-2">
                                 <TrendingDown className="w-4 h-4 text-amber-500" />
                                 Technical Debt Index Trend
                             </CardTitle>
@@ -207,8 +207,8 @@ export default function TrendsPage() {
                                         </linearGradient>
                                     </defs>
                                     <CartesianGrid strokeDasharray="3 3" stroke="#F0F1EC" />
-                                    <XAxis dataKey="date" tick={{ fill: '#8B907E', fontSize: 11 }} axisLine={false} tickLine={false} />
-                                    <YAxis domain={[0, 100]} tick={{ fill: '#8B907E', fontSize: 11 }} axisLine={false} tickLine={false} />
+                                    <XAxis dataKey="date" tick={{ fill: '#7B8DB0', fontSize: 11 }} axisLine={false} tickLine={false} />
+                                    <YAxis domain={[0, 100]} tick={{ fill: '#7B8DB0', fontSize: 11 }} axisLine={false} tickLine={false} />
                                     <Tooltip content={<CustomTooltip />} />
                                     <Area type="monotone" dataKey="Debt" stroke="#f59e0b" strokeWidth={2} fill="url(#debtGrad)" />
                                 </AreaChart>
@@ -221,23 +221,23 @@ export default function TrendsPage() {
             {/* Scan history table */}
             <Card className="bg-white border-black/[0.06] shadow-xs rounded-[28px]">
                 <CardHeader className="pb-0">
-                    <CardTitle className="text-sm font-bold text-[#0D0E12] flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-[#555962]" />
+                    <CardTitle className="text-sm font-bold text-[#0A2A66] flex items-center gap-2">
+                        <Calendar className="w-4 h-4 text-[#4A5A7A]" />
                         Scan History
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-4">
                     {history.length === 0 ? (
-                        <p className="text-[#555962] text-sm text-center py-6">No scans yet.</p>
+                        <p className="text-[#4A5A7A] text-sm text-center py-6">No scans yet.</p>
                     ) : (
                         <div className="space-y-2">
                             {history.map(scan => (
                                 <div key={scan.id} className="flex items-center justify-between py-3 border-b border-black/[0.04] last:border-0">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-[#D4F63C] border border-black/20" />
+                                        <div className="w-1.5 h-1.5 rounded-full bg-[#FFD447] border border-black/20" />
                                         <div>
-                                            <p className="text-sm font-semibold text-[#0D0E12]">Scan #{scan.id}</p>
-                                            <p className="text-xs text-[#555962]">{format(new Date(scan.createdAt), 'MMM d, yyyy · HH:mm')}</p>
+                                            <p className="text-sm font-semibold text-[#0A2A66]">Scan #{scan.id}</p>
+                                            <p className="text-xs text-[#4A5A7A]">{format(new Date(scan.createdAt), 'MMM d, yyyy · HH:mm')}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-3">

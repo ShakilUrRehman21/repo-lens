@@ -44,16 +44,16 @@ function ScoreRadial({ score, label, color }: { score: number; label: string; co
                         endAngle={-270}
                     >
                         <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
-                        <RadialBar background={{ fill: '#F6F7F3' }} dataKey="value" angleAxisId={0} cornerRadius={5}>
+                        <RadialBar background={{ fill: '#EAF0FA' }} dataKey="value" angleAxisId={0} cornerRadius={5}>
                             <Cell fill={color} />
                         </RadialBar>
                     </RadialBarChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-base font-extrabold text-[#0D0E12]">{score}</span>
+                    <span className="text-base font-extrabold text-[#0A2A66]">{score}</span>
                 </div>
             </div>
-            <p className="text-[11px] font-semibold text-[#555962] mt-1.5">{label}</p>
+            <p className="text-[11px] font-semibold text-[#4A5A7A] mt-1.5">{label}</p>
         </div>
     )
 }
@@ -81,7 +81,7 @@ export default function OverviewPage() {
 
     const scores = scan
         ? [
-            { label: 'Architecture', score: Math.round(scan.architectureScore ?? 0), color: '#0D0E12' },
+            { label: 'Architecture', score: Math.round(scan.architectureScore ?? 0), color: '#0A2A66' },
             { label: 'Security', score: Math.round(scan.securityScore ?? 0), color: '#ef4444' },
             { label: 'Maintainability', score: Math.round(scan.maintainabilityScore ?? 0), color: '#10b981' },
             { label: 'Scalability', score: Math.round(scan.scalabilityScore ?? 0), color: '#8b5cf6' },
@@ -98,10 +98,10 @@ export default function OverviewPage() {
         <div className="space-y-8 max-w-6xl">
             {/* Header Greeting */}
             <div>
-                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0D0E12]">
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0A2A66]">
                     Welcome back, {user?.firstName ?? 'Developer'}
                 </h2>
-                <p className="text-[#555962] text-xs sm:text-sm mt-1">
+                <p className="text-[#4A5A7A] text-xs sm:text-sm mt-1">
                     {scan ? "Here is your latest repository health report and architectural index." : "Import a repository to start your first 5-stage automated scan."}
                 </p>
             </div>
@@ -117,20 +117,20 @@ export default function OverviewPage() {
                     <div className="bg-white rounded-[28px] p-6 sm:p-8 border border-black/[0.06] shadow-xs">
                         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
                             <div>
-                                <span className="inline-block px-3.5 py-1 rounded-full border border-black/10 bg-[#F6F7F3] text-[11px] font-semibold text-[#0D0E12] mb-3">
+                                <span className="inline-block px-3.5 py-1 rounded-full border border-black/10 bg-[#EAF0FA] text-[11px] font-semibold text-[#0A2A66] mb-3">
                                     Continuous Score
                                 </span>
                                 <div className="flex items-baseline gap-2">
-                                    <span className="text-5xl sm:text-6xl font-black tracking-tight text-[#0D0E12]">
+                                    <span className="text-5xl sm:text-6xl font-black tracking-tight text-[#0A2A66]">
                                         {Math.round(scan.overallScore ?? 0)}
                                     </span>
-                                    <span className="text-base text-[#8B907E] font-medium">/ 100</span>
+                                    <span className="text-base text-[#7B8DB0] font-medium">/ 100</span>
                                 </div>
                                 <div className="mt-3 flex items-center gap-2">
-                                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#D4F63C] text-black">
+                                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#FFD447] text-black">
                                         {(scan.overallScore ?? 0) >= 80 ? 'Healthy Codebase' : (scan.overallScore ?? 0) >= 60 ? 'Moderate Health' : 'Needs Immediate Refactor'}
                                     </span>
-                                    <span className="text-xs text-[#555962] font-mono">AST Verified</span>
+                                    <span className="text-xs text-[#4A5A7A] font-mono">AST Verified</span>
                                 </div>
                             </div>
 
@@ -148,37 +148,37 @@ export default function OverviewPage() {
                         <div className="bg-white rounded-2xl p-5 border border-black/[0.06] shadow-xs space-y-2">
                             <div className="flex items-center gap-2">
                                 <AlertTriangle className="w-4 h-4 text-amber-500" />
-                                <span className="text-xs font-semibold text-[#555962]">Technical Debt</span>
+                                <span className="text-xs font-semibold text-[#4A5A7A]">Technical Debt</span>
                             </div>
-                            <p className="text-3xl font-extrabold text-[#0D0E12]">{Math.round(scan.technicalDebtIndex ?? 0)}%</p>
-                            <p className="text-[11px] text-[#8B907E]">Relative to repo size</p>
+                            <p className="text-3xl font-extrabold text-[#0A2A66]">{Math.round(scan.technicalDebtIndex ?? 0)}%</p>
+                            <p className="text-[11px] text-[#7B8DB0]">Relative to repo size</p>
                         </div>
 
                         <div className="bg-white rounded-2xl p-5 border border-black/[0.06] shadow-xs space-y-2">
                             <div className="flex items-center gap-2">
                                 <Shield className="w-4 h-4 text-red-500" />
-                                <span className="text-xs font-semibold text-[#555962]">Security</span>
+                                <span className="text-xs font-semibold text-[#4A5A7A]">Security</span>
                             </div>
-                            <p className="text-3xl font-extrabold text-[#0D0E12]">{Math.round(scan.securityScore ?? 0)}<span className="text-sm font-normal text-[#8B907E]">/100</span></p>
-                            <p className="text-[11px] text-[#8B907E]">Zero hardcoded secrets</p>
+                            <p className="text-3xl font-extrabold text-[#0A2A66]">{Math.round(scan.securityScore ?? 0)}<span className="text-sm font-normal text-[#7B8DB0]">/100</span></p>
+                            <p className="text-[11px] text-[#7B8DB0]">Zero hardcoded secrets</p>
                         </div>
 
                         <div className="bg-white rounded-2xl p-5 border border-black/[0.06] shadow-xs space-y-2">
                             <div className="flex items-center gap-2">
                                 <Zap className="w-4 h-4 text-purple-600" />
-                                <span className="text-xs font-semibold text-[#555962]">Flagged Files</span>
+                                <span className="text-xs font-semibold text-[#4A5A7A]">Flagged Files</span>
                             </div>
-                            <p className="text-3xl font-extrabold text-[#0D0E12]">{topRiskFiles.length}</p>
-                            <p className="text-[11px] text-[#8B907E]">High risk hotspots</p>
+                            <p className="text-3xl font-extrabold text-[#0A2A66]">{topRiskFiles.length}</p>
+                            <p className="text-[11px] text-[#7B8DB0]">High risk hotspots</p>
                         </div>
 
                         <div className="bg-white rounded-2xl p-5 border border-black/[0.06] shadow-xs space-y-2">
                             <div className="flex items-center gap-2">
                                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                                <span className="text-xs font-semibold text-[#555962]">Maintainability</span>
+                                <span className="text-xs font-semibold text-[#4A5A7A]">Maintainability</span>
                             </div>
-                            <p className="text-3xl font-extrabold text-[#0D0E12]">{Math.round(scan.maintainabilityScore ?? 0)}<span className="text-sm font-normal text-[#8B907E]">/100</span></p>
-                            <p className="text-[11px] text-[#8B907E]">Modularity score</p>
+                            <p className="text-3xl font-extrabold text-[#0A2A66]">{Math.round(scan.maintainabilityScore ?? 0)}<span className="text-sm font-normal text-[#7B8DB0]">/100</span></p>
+                            <p className="text-[11px] text-[#7B8DB0]">Modularity score</p>
                         </div>
                     </div>
 
@@ -186,18 +186,18 @@ export default function OverviewPage() {
                     {topRiskFiles.length > 0 && (
                         <div className="bg-white rounded-[28px] p-6 sm:p-8 border border-black/[0.06] shadow-xs space-y-4">
                             <div className="flex items-center justify-between pb-3 border-b border-black/[0.06]">
-                                <h3 className="text-sm font-bold text-[#0D0E12] flex items-center gap-2">
-                                    <BarChart3 className="w-4 h-4 text-[#0D0E12]" />
+                                <h3 className="text-sm font-bold text-[#0A2A66] flex items-center gap-2">
+                                    <BarChart3 className="w-4 h-4 text-[#0A2A66]" />
                                     <span>Top Risk Files</span>
                                 </h3>
-                                <span className="text-xs text-[#555962] font-mono">{topRiskFiles.length} files requiring review</span>
+                                <span className="text-xs text-[#4A5A7A] font-mono">{topRiskFiles.length} files requiring review</span>
                             </div>
                             <div className="space-y-2 pt-1">
                                 {topRiskFiles.map((f) => (
-                                    <div key={f.filePath} className="flex items-center justify-between p-3 rounded-xl bg-[#FAFAF8] border border-black/[0.04] hover:bg-[#F6F7F3] transition-colors">
-                                        <span className="text-xs font-mono font-medium text-[#0D0E12] truncate max-w-sm">{f.filePath}</span>
+                                    <div key={f.filePath} className="flex items-center justify-between p-3 rounded-xl bg-[#F3F6FC] border border-black/[0.04] hover:bg-[#EAF0FA] transition-colors">
+                                        <span className="text-xs font-mono font-medium text-[#0A2A66] truncate max-w-sm">{f.filePath}</span>
                                         <div className="flex items-center gap-3">
-                                            <span className="text-xs font-bold text-[#555962]">Score: {Math.round(f.fileScore ?? 0)}</span>
+                                            <span className="text-xs font-bold text-[#4A5A7A]">Score: {Math.round(f.fileScore ?? 0)}</span>
                                             <Badge className={`text-[10px] font-bold uppercase rounded-lg px-2 py-0.5 ${f.riskLevel === 'critical' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-800'}`}>
                                                 {f.riskLevel}
                                             </Badge>
@@ -212,10 +212,10 @@ export default function OverviewPage() {
                     {scan.improvementSummary && (
                         <div className="bg-white rounded-[28px] p-6 sm:p-8 border border-black/[0.06] shadow-xs space-y-3">
                             <div className="flex items-center gap-2 pb-2 border-b border-black/[0.06]">
-                                <TrendingUp className="w-4 h-4 text-[#0D0E12]" />
-                                <h3 className="text-sm font-bold text-[#0D0E12]">AI Architecture Summary</h3>
+                                <TrendingUp className="w-4 h-4 text-[#0A2A66]" />
+                                <h3 className="text-sm font-bold text-[#0A2A66]">AI Architecture Summary</h3>
                             </div>
-                            <p className="text-xs sm:text-sm text-[#555962] leading-relaxed pt-1">
+                            <p className="text-xs sm:text-sm text-[#4A5A7A] leading-relaxed pt-1">
                                 {scan.improvementSummary}
                             </p>
                         </div>
@@ -224,20 +224,20 @@ export default function OverviewPage() {
             ) : (
                 /* Empty state matching ZenCrypto theme */
                 <div className="bg-white rounded-[32px] p-12 sm:p-16 border border-black/[0.06] shadow-xs text-center max-w-2xl mx-auto space-y-6">
-                    <div className="w-16 h-16 rounded-2xl bg-[#0D0E12] text-[#D4F63C] flex items-center justify-center mx-auto shadow-sm">
+                    <div className="w-16 h-16 rounded-2xl bg-[#0A2A66] text-[#FFD447] flex items-center justify-center mx-auto shadow-sm">
                         <GitBranch className="w-8 h-8" />
                     </div>
                     <div className="space-y-2">
-                        <h3 className="text-xl sm:text-2xl font-extrabold text-[#0D0E12]">No repository scans yet</h3>
-                        <p className="text-xs sm:text-sm text-[#555962] max-w-md mx-auto leading-relaxed">
+                        <h3 className="text-xl sm:text-2xl font-extrabold text-[#0A2A66]">No repository scans yet</h3>
+                        <p className="text-xs sm:text-sm text-[#4A5A7A] max-w-md mx-auto leading-relaxed">
                             Connect your GitHub repositories or paste a public repository URL to run your first 5-stage AI code intelligence scan.
                         </p>
                     </div>
                     <div className="pt-2">
                         <Link href="/dashboard/repositories">
-                            <button className="inline-flex items-center gap-2 bg-[#D4F63C] hover:bg-[#c9ee30] text-[#0D0E12] text-xs font-bold px-6 py-3.5 rounded-xl shadow-sm transition-all hover:-translate-y-0.5">
+                            <button className="inline-flex items-center gap-2 bg-[#FFD447] hover:bg-[#c9ee30] text-[#0A2A66] text-xs font-bold px-6 py-3.5 rounded-xl shadow-sm transition-all hover:-translate-y-0.5">
                                 <span>Import & Scan Repository</span>
-                                <ArrowUpRight className="w-4 h-4 text-[#0D0E12]" />
+                                <ArrowUpRight className="w-4 h-4 text-[#0A2A66]" />
                             </button>
                         </Link>
                     </div>

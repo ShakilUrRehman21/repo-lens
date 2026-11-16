@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
@@ -35,22 +36,22 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-color: #FAFAF8;
-    color: #0D0E12;
+    background-color: #F3F6FC;
+    color: #0A2A66;
   }
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #F6F7F3;
+    background: #EAF0FA;
   }
   ::-webkit-scrollbar-thumb {
-    background: #CBD2BE;
+    background: #B9C8E6;
     border-radius: 3px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #9EA48F;
+    background: #8FA3CC;
   }
 }
 
@@ -99,7 +100,7 @@
     background-clip: text;
   }
   .gradient-text-lime {
-    background: linear-gradient(135deg, #d4f63c 0%, #a3e635 50%, #4ade80 100%);
+    background: linear-gradient(135deg, #FFD447 0%, #a3e635 50%, #4ade80 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -165,3 +166,21 @@
     transform: scale(1.04);
   }
 }
+
+/* RETHEME 2026 */
+:root {
+  --background:220 60% 97%; --foreground:220 82% 22%; --card:0 0% 100%; --card-foreground:220 82% 22%;
+  --popover:0 0% 100%; --popover-foreground:220 82% 22%;
+  --primary:46 100% 64%; --primary-foreground:220 82% 22%; --accent:46 100% 64%; --accent-foreground:220 82% 22%;
+  --secondary:220 45% 93%; --secondary-foreground:220 82% 22%; --muted:220 45% 94%; --muted-foreground:220 25% 45%;
+  --border:220 40% 85%; --input:220 40% 85%; --ring:220 82% 30%; --radius:.25rem;
+}
+body {
+  font-family:'IBM Plex Sans',system-ui,sans-serif !important;
+  background-color:#F3F6FC !important;
+  background-image:linear-gradient(rgba(14,58,138,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(14,58,138,.05) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+code,pre,kbd,.font-mono { font-family:'IBM Plex Mono',ui-monospace,monospace !important; }
+h1,h2,h3 { letter-spacing:-.025em; }
+::selection { background:#FFD447; color:#0A2A66; }
