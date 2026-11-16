@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { currentUser } from '@clerk/nextjs/server'
 import { db } from '@/db'
+import { requireOwnedScan } from '@/lib/scan-access'
 import { scans, repositories } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 
@@ -13,7 +14,9 @@ export async function GET(
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const scanId = parseInt(params.scanId)
+    const access = await requireOwnedScan(params.scanId)
+    if ('error' in access) return access.error
+    const scanId = access.scanId
     const scan = await db.query.scans.findFirst({
         where: eq(scans.id, scanId),
         with: {
