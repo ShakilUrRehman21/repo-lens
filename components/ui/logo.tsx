@@ -20,7 +20,7 @@ export function RepoLensMark({ size = 34, className = '' }: { size?: number; cla
             className={`flex-shrink-0 transition-transform duration-300 group-hover:scale-105 ${className}`}
         >
             {/* Base Squircle */}
-            <rect width="40" height="40" rx="11" fill="#0A2A66" />
+            <rect width="40" height="40" rx="3" fill="#0A2A66" />
             <rect
                 x="0.75"
                 y="0.75"
@@ -118,7 +118,7 @@ export function Logo({
             <div className="flex flex-col leading-none">
                 <div className="flex items-center gap-1.5">
                     <span className={`font-black tracking-tight ${s.text} ${textColor}`}>
-                        Repo<span className="text-[#849924]">Lens</span>
+                        Repo<span className="text-[#2B5BD7]">Lens</span>
                     </span>
                     <span className="px-1.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-[#0A2A66] text-[#FFD447] border border-black/10">
                         AI
