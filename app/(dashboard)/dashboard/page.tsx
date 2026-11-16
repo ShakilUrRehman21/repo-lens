@@ -44,7 +44,7 @@ function ScoreRadial({ score, label, color }: { score: number; label: string; co
                         endAngle={-270}
                     >
                         <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
-                        <RadialBar background={{ fill: '#EAF0FA' }} dataKey="value" angleAxisId={0} cornerRadius={5}>
+                        <RadialBar background={{ fill: '#EAF0FA' }} dataKey="value" angleAxisId={0} cornerRadius={0}>
                             <Cell fill={color} />
                         </RadialBar>
                     </RadialBarChart>
@@ -82,10 +82,10 @@ export default function OverviewPage() {
     const scores = scan
         ? [
             { label: 'Architecture', score: Math.round(scan.architectureScore ?? 0), color: '#0A2A66' },
-            { label: 'Security', score: Math.round(scan.securityScore ?? 0), color: '#ef4444' },
-            { label: 'Maintainability', score: Math.round(scan.maintainabilityScore ?? 0), color: '#10b981' },
-            { label: 'Scalability', score: Math.round(scan.scalabilityScore ?? 0), color: '#8b5cf6' },
-            { label: 'Performance', score: Math.round(scan.performanceScore ?? 0), color: '#f59e0b' },
+            { label: 'Security', score: Math.round(scan.securityScore ?? 0), color: '#2B5BD7' },
+            { label: 'Maintainability', score: Math.round(scan.maintainabilityScore ?? 0), color: '#0E3A8A' },
+            { label: 'Scalability', score: Math.round(scan.scalabilityScore ?? 0), color: '#6F8FD8' },
+            { label: 'Performance', score: Math.round(scan.performanceScore ?? 0), color: '#E0A800' },
         ]
         : []
 

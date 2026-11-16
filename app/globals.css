@@ -198,3 +198,12 @@ a, button { transition:color .2s, background-color .2s, border-color .2s, box-sh
 button:not(:disabled):active { transform:scale(.97); }
 html { scroll-behavior:smooth; -webkit-font-smoothing:antialiased; }
 @media (prefers-reduced-motion:reduce) { main > *, main .grid > * { animation:none !important; } html { scroll-behavior:auto; } }
+
+/* DASHBOARD 2026 */
+main .rounded-xl, main .rounded-2xl, main .rounded-3xl, aside .rounded-lg, aside .rounded-xl, aside .rounded-2xl { border-radius:3px !important; }
+main .shadow-sm, main .shadow, main .shadow-md, main .shadow-lg, main .shadow-xl { box-shadow:none !important; }
+main .bg-white.rounded-xl, main .bg-white.rounded-2xl, main .bg-white.rounded-3xl { border:1px solid rgba(10,42,102,.22) !important; }
+main .bg-white.rounded-2xl:hover, main .bg-white.rounded-3xl:hover { border-color:#0A2A66 !important; }
+main h1 { letter-spacing:-.035em; }
+main [class*="rounded-["]:not(.rounded-full), aside [class*="rounded-"]:not(.rounded-full) { border-radius:3px !important; }
+main .bg-white[class*="rounded-["] { border:1px solid rgba(10,42,102,.22) !important; box-shadow:none !important; }
