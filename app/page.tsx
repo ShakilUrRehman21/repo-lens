@@ -37,7 +37,7 @@ export default function LandingPage() {
               <Link href="/sign-up" className="rl-btn">Analyze a repository</Link>
               <Link href="/sign-in" className="rl-ghost">I have an account</Link>
             </div>
-            <p className="rl-note rl-rise rl-d3">// public or private GitHub repos</p>
+            <p className="rl-note rl-rise rl-d3">{'// public or private GitHub repos'}</p>
           </div>
 
           <Parallax offset={30}>
